@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "918547243572",
+    "project_id": "non-tact-outsourcing-service",
+    "storage_bucket": "non-tact-outsourcing-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918547243572:android:e7de43c48d04cfa10e6061",
+        "android_client_info": {
+          "package_name": "com.company.non_tact_messenger_service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918547243572-intkgatg24josrrrbetuflbah7kdnm43.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.non_tact_messenger_service",
+            "certificate_hash": "9b3e36f1721a225aa9a6e0d09d4bb29f707803e0"
+          }
+        },
+        {
+          "client_id": "918547243572-9iv29ihl10msia81ohv4f42a8ki9t0hg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARJAK8Gk_4CCtADSP-RZZwV7D6EB-HtJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918547243572-9iv29ihl10msia81ohv4f42a8ki9t0hg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
