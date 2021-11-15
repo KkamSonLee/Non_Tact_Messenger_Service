@@ -2,13 +2,13 @@ package com.example.non_tact_messenger_service
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.non_tact_messenger_service.databinding.ActivityMainBinding
+import com.example.non_tact_messenger_service.databinding.ActivityDoctorBinding
 
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+class Doctor_Activity : AppCompatActivity() {
+    lateinit var binding: ActivityDoctorBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityDoctorBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 }
