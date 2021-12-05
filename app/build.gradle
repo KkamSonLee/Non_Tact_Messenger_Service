@@ -33,7 +33,9 @@ android {
     viewBinding{
         enabled = true
     }
+
 }
+
 
 dependencies {
 
@@ -55,6 +57,10 @@ dependencies {
     implementation("com.louiscad.splitties:splitties-fun-pack-android-base:3.0.0")
 
     implementation 'org.jsoup:jsoup:1.11.3'
+
+    implementation "com.github.lisawray.groupie:groupie:2.10.0"
+    implementation "com.github.lisawray.groupie:groupie-databinding:2.10.0"
+
 
     kotlin {
         experimental {

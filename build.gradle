@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.anko_version = '0.10.8'
+    ext.kotlin_version = '1.4.21'
     repositories {
         google()
         mavenCentral()
@@ -12,6 +13,8 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.10'
     }
 }
+
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
