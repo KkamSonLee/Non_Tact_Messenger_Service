@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import com.example.non_tact_messenger_service.R
 
 class HealthInfoFragment : Fragment() {
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -17,5 +15,4 @@ class HealthInfoFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_health_info, container, false)
     }
-
 }

@@ -9,16 +9,20 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 
-class WebAppInterface(){
+class WebAppInterface{
     @JavascriptInterface
-    fun getHtml(html:String){
+    fun getHtml(html:String): Boolean{
         val doc = Jsoup.parse(html)
         val title = doc.select("div[id=data] table").select("a")
         val matcher: Matcher = Pattern
             .compile("[>](.*?)[<]")
             .matcher(title.toString())
-        while(matcher.find()){
+        if(matcher.find()){
             Log.d("result: ", "title= ${matcher.group(1)}")
+            return true
+        }else{
+
+            return false
         }
     }
 }

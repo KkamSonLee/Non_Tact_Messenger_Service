@@ -12,7 +12,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         Handler().postDelayed({
             if (FirebaseAuth.getInstance().currentUser == null)
-                start<Doctor_Activity>()
+                start<MainActivity>()
             else
                 start<MainActivity>()
             finish()
