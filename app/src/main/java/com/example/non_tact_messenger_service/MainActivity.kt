@@ -12,17 +12,14 @@ import com.google.firebase.ktx.Firebase
 import splitties.toast.toast
 import android.R
 import androidx.fragment.app.Fragment
-import com.example.non_tact_messenger_service.fragment.HealthInfoFragment
-import com.example.non_tact_messenger_service.fragment.SearchFragment
-import com.example.non_tact_messenger_service.fragment.SelectFragment
-import com.example.non_tact_messenger_service.fragment.SignupFragment
+import com.example.non_tact_messenger_service.fragment.*
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     var fragment_Container =
-        listOf<Fragment>(HealthInfoFragment(), SignupFragment(), SelectFragment(), SearchFragment())
+        listOf<Fragment>(ProfileFragment(), SignupFragment(), SelectFragment(), SearchFragment())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
         binding.b1.setOnClickListener {
-            fragmentChange(1)
+            val otherUserID = "qUnZoyaFHpqbAIWtbf2B"
+
         }
         binding.b2.setOnClickListener {
             fragmentChange(2)
@@ -84,6 +82,8 @@ class MainActivity : AppCompatActivity() {
     private fun reload() {
 
     }
+
+
 
     fun fragmentChange(index: Int) {
         supportFragmentManager.beginTransaction()
