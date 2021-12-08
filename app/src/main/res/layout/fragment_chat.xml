@@ -1,20 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/testbutton"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context="com.example.non_tact_messenger_service.chat.ChatFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button2"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatrecycler"
+            android:layout_width="match_parent"
+            android:layout_height="620dp"
+            android:background="#D4D3FF"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/Chat_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/Chat_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:orientation="horizontal">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sendinput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/btn_sendimg"
+            android:hint="메세지를 입력해주세요.                      "
+            android:padding="8dp" />
+
+        <ImageButton
+            android:id="@+id/btn_sendmsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_trans_btn" />
+
+
+        <ImageButton
+            android:id="@+id/btn_sendimg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_attach_file_24" />
+    </LinearLayout>
+
+
+</LinearLayout>
+
 </FrameLayout>

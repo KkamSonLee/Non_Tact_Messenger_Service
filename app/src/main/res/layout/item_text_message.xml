@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="20dp"
 
-    <LinearLayout
+    >
+
+    <RelativeLayout
+        android:id="@+id/message_root"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="#F1F1F1">
 
         <TextView
-            android:id="@+id/userid"
+            android:id="@+id/textView_message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
-
+            android:fontFamily="@font/gsans_bold"
+            android:maxWidth="250dp"
+            android:minWidth="120dp"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:text="방금 찍은 사진이며, 화상통화 희망합니다." />
         <TextView
-            android:id="@+id/message"
+            android:id="@+id/textView_message_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textView_message_text"
+            android:layout_alignEnd="@id/textView_message_text"
+            android:layout_marginEnd="4dp"
+            android:textSize="12sp"
+            android:fontFamily="@font/gsans_bold"
+            android:text="3/15/2018 3:00 PM"
             />
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/timeline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

@@ -7,12 +7,25 @@
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_doctor.xml" value="0.2" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_patient.xml" value="0.264" />
-        <entry key="..\:/Users/ASUS/Documents/GitHub/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_doctor.xml" value="0.1" />
-        <entry key="..\:/Users/ASUS/Documents/GitHub/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/ASUS/Documents/GitHub/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_patient.xml" value="0.1" />
-        <entry key="..\:/Users/ASUS/Documents/GitHub/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_splash.xml" value="0.1259259259259259" />
-        <entry key="..\:/Users/ASUS/Documents/GitHub/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_search.xml" value="0.1" />
-        <entry key="..\:/Users/ASUS/Documents/GitHub/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_select.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/drawable/chat_shape.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/drawable/ic_baseline_attach_file_24.xml" value="0.378125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.378125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/drawable/ic_btn_sendimg.xml" value="0.378125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/drawable/ic_launcher_background.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/drawable/ic_trans_btn.xml" value="0.378125" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_chat.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_doctor.xml" value="0.16590678824721378" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_patient.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_chat.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_health_info.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_search.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_select.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_signup.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/item_text_message.xml" value="0.25" />
       </map>
     </option>
   </component>

@@ -23,7 +23,7 @@ object Firebase_Database {
 //        )
 
     private val currentUserDocRef: DocumentReference
-        get() = firestoreInstance.document("Users/eurPdsswDs3rMG35hqM7") //테스트용
+        get() = firestoreInstance.document("/Users/eurPdsswDs3rMG35hqM7") //테스트용
 
     private val chatChannelsCollectionRef = firestoreInstance.collection("chat_room")
 
@@ -88,7 +88,7 @@ object Firebase_Database {
             }
     }
 
-    fun sendMessage(message: Message, channelId: String) {
+    fun sendMessage(message: TextMessage, channelId: String) {
         chatChannelsCollectionRef.document(channelId)
             .collection("messages")
             .add(message)
