@@ -3,7 +3,10 @@ package com.example.non_tact_messenger_service
 import android.content.Context
 import android.util.Log
 import com.example.non_tact_messenger_service.chat.*
+import com.example.non_tact_messenger_service.chat.Message
+import com.example.non_tact_messenger_service.chat.model.ImageMessage
 import com.example.non_tact_messenger_service.chat.model.TextMessage
+import com.example.non_tact_messenger_service.chat.recycler.ImageMessageItem
 import com.example.non_tact_messenger_service.chat.recycler.TextMessageItem
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -73,22 +76,19 @@ object Firebase_Database {
 
                 val items = mutableListOf<Item>()
                 querySnapshot!!.documents.forEach {
-                    if (it["type"] == MessageType.TEXT)
+                    if (it["type"] == MessageType.TEXT) // 메세지 타입이 텍스트
                         items.add(TextMessageItem(it.toObject(TextMessage::class.java)!!, context!!))
                     else
-//                        items.add(
-//                            ImageMessageItem(
-//                                it.toObject(ImageMessage::class.java)!!,
-//                                context
-//                            )
-//                        )
+                        items.add(
+                            ImageMessageItem(it.toObject(ImageMessage::class.java)!!, context!!)
+                        )
                     return@forEach
                 }
                 onListen(items)
             }
     }
 
-    fun sendMessage(message: TextMessage, channelId: String) {
+    fun sendMessage(message: Message, channelId: String) {
         chatChannelsCollectionRef.document(channelId)
             .collection("messages")
             .add(message)

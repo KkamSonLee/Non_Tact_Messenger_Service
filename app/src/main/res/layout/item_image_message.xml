@@ -13,30 +13,29 @@
         android:layout_margin="5dp"
         android:background="@drawable/chat_shape">
 
-        <TextView
-            android:id="@+id/textView_message_text"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/ImageView_message"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/gsans_bold"
-            android:maxWidth="250dp"
-            android:minWidth="120dp"
+            android:adjustViewBounds="true"
             android:paddingStart="8dp"
             android:paddingTop="8dp"
             android:paddingEnd="8dp"
-            android:text="방금 찍은 사진이며, 화상통화 희망합니다." />
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_baseline_image_24" />
+
         <TextView
             android:id="@+id/textView_message_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView_message_text"
-            android:layout_alignEnd="@id/textView_message_text"
-            android:layout_marginEnd="8dp"
+            android:layout_below="@id/ImageView_message"
+            android:layout_alignEnd="@id/ImageView_message"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
-            android:textSize="12sp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/gsans_bold"
             android:text="3/15/2018 3:00 PM"
-            />
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </FrameLayout>
