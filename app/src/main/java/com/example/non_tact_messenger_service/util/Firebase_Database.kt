@@ -36,8 +36,6 @@ object Firebase_Database {
             if (!it.exists()) {
                 val newUser = UserInfo(
                     user?.displayName ?: "",
-                    user?.email ?: "",
-                    user?.uid ?: "",
                     null
                 )
                 currentUserDocRef.set(newUser).addOnSuccessListener {
@@ -47,11 +45,9 @@ object Firebase_Database {
                 onComplete()
         }
     }
-    fun updateCurrentUser(name:String = "", email:String = "", uid:String = "", profilePicturePath: String? = null){
+    fun updateCurrentUser(name:String = "", profilePicturePath: String? = null){
         val userFieldMap = mutableMapOf<String, Any>()
         if (name.isNotBlank()) userFieldMap["name"] = name
-        if (email.isNotBlank()) userFieldMap["email"] = email
-        if (uid.isNotBlank()) userFieldMap["uid"] = uid
         if (profilePicturePath != null) userFieldMap["profilePicturePath"] = profilePicturePath
         currentUserDocRef.update(userFieldMap)
     }

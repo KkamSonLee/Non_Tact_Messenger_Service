@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
         binding.b1.setOnClickListener {
-            val otherUserID = "qUnZoyaFHpqbAIWtbf2B"
+            fragmentChange(1)
 
         }
         binding.b2.setOnClickListener {

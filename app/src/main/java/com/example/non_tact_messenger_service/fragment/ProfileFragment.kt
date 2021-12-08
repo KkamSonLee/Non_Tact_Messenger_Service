@@ -17,6 +17,7 @@ import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.chat.StorageUtil
 import com.example.non_tact_messenger_service.databinding.FragmentProfileBinding
+import com.example.non_tact_messenger_service.glide.GlideApp
 import com.example.non_tact_messenger_service.util.Firebase_Database
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.data.model.User
@@ -44,6 +45,7 @@ class ProfileFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         mainActivity = null
+        binding.editTextName.setText("")
     }
 
     @SuppressLint("UseRequireInsteadOfGet")
@@ -69,8 +71,6 @@ class ProfileFragment : Fragment() {
                     StorageUtil.uploadProfilePhoto(selectedImageBytes) { imagePath ->
                         Firebase_Database.updateCurrentUser(
                             binding.editTextName.text.toString(),
-                            binding.editTextEmail.text.toString(),
-                            FirebaseAuth.getInstance().uid.toString(),
                             imagePath
                         )
                         Log.d("image path", imagePath.toString())
@@ -79,8 +79,6 @@ class ProfileFragment : Fragment() {
                 } else {
                     Firebase_Database.updateCurrentUser(
                         binding.editTextName.text.toString(),
-                        binding.editTextEmail.text.toString(),
-                        FirebaseAuth.getInstance().uid.toString(),
                         null
                     )
 
@@ -106,7 +104,7 @@ class ProfileFragment : Fragment() {
             selectedImageBmp.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
             selectedImageBytes = outputStream.toByteArray()
             Log.d("onResult", selectedImageBytes.toString())
-            Glide.with(this)
+            GlideApp.with(this)
                 .load(selectedImageBytes)
                 .into(binding.imageViewProfilePicture)
             pictureJustChanged = true
@@ -117,12 +115,12 @@ class ProfileFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d("onStart", "buffering")
-        Firebase_Database.getCurrentUser { user: com.example.non_tact_messenger_service.model.UserInfo ->
+        Firebase_Database.getCurrentUser { user ->
             if (this@ProfileFragment.isVisible) {
                 binding.editTextName.setText(user.name)
-                binding.editTextEmail.setText(user.email)
                 if (!pictureJustChanged && user.profilePicturePath != null) {
-                    Glide.with(this)
+
+                    GlideApp.with(this)
                         .load(StorageUtil.pathToReference(user.profilePicturePath))
                         .placeholder(R.drawable.fui_ic_check_circle_black_128dp)
                         .into(binding.imageViewProfilePicture)
