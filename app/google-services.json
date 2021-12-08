@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:918547243572:android:e7de43c48d04cfa10e6061",
         "android_client_info": {
-          "package_name": "com.company.non_tact_messenger_service"
+          "package_name": "com.example.non_tact_messenger_service"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "918547243572-intkgatg24josrrrbetuflbah7kdnm43.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.company.non_tact_messenger_service",
+            "package_name": "com.example.non_tact_messenger_service",
             "certificate_hash": "9b3e36f1721a225aa9a6e0d09d4bb29f707803e0"
           }
         },
