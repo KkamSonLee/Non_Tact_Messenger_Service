@@ -9,15 +9,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.non_tact_messenger_service.util.Firebase_Database
 import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.databinding.FragmentSignupBinding
-import com.example.non_tact_messenger_service.util.Firebase_Database
+import com.example.non_tact_messenger_service.notification.FirebaseIDService
+import com.example.non_tact_messenger_service.notification.FirebaseMessageService
+
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.rpc.context.AttributeContext
 import splitties.fragments.addToBackStack
 import splitties.fragments.start
@@ -72,6 +76,9 @@ class SignupFragment : Fragment() {
             if (resultCode == Activity.RESULT_OK) {
                 val auth = FirebaseAuth.getInstance().currentUser
                 Firebase_Database.initCurrentUser {
+
+                    val registrationToken = FirebaseMessaging.getInstance().token
+                    FirebaseIDService.addTokenToFirestore(registrationToken.toString())
 
                     mainActivity?.fragmentChange(3)
                 }

@@ -3,6 +3,7 @@ package com.example.non_tact_messenger_service.chat.recycler
 import android.view.Gravity
 import android.widget.FrameLayout
 import com.example.non_tact_messenger_service.chat.Message
+import com.google.firebase.auth.FirebaseAuth
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.item_text_message.*
@@ -24,8 +25,8 @@ abstract class MessageItem(private val message: Message) :Item()
 
 
     private fun setMessageRootGravity(viewHolder: GroupieViewHolder) {
-        // if (message.senderId == FirebaseAuth.getInstance().currentUser?.uid) { // 내가 보낸 메세지의 경우 오른쪽으로 정렬
-        if (message.senderId == "eurPdsswDs3rMG35hqM7") {  //임시로 사용자 아디를 넣어줌
+        if (message.senderId == FirebaseAuth.getInstance().currentUser?.uid) { // 내가 보낸 메세지의 경우 오른쪽으로 정렬
+        //if (message.senderId == "eurPdsswDs3rMG35hqM7") {  //임시로 사용자 아디를 넣어줌
             viewHolder.message_root.apply {
                 //background = R.drawable.rect_round_white
                 val lParams = FrameLayout.LayoutParams(

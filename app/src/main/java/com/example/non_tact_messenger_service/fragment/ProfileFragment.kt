@@ -15,15 +15,10 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.R
-import com.example.non_tact_messenger_service.chat.StorageUtil
+import com.example.non_tact_messenger_service.Storage
 import com.example.non_tact_messenger_service.databinding.FragmentProfileBinding
-import com.example.non_tact_messenger_service.glide.GlideApp
 import com.example.non_tact_messenger_service.util.Firebase_Database
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.data.model.User
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserInfo
-import splitties.fragments.start
 import java.io.ByteArrayOutputStream
 
 
@@ -68,7 +63,7 @@ class ProfileFragment : Fragment() {
             }
             binding.btnSave.setOnClickListener {
                 if (::selectedImageBytes.isInitialized) {
-                    StorageUtil.uploadProfilePhoto(selectedImageBytes) { imagePath ->
+                    Storage.uploadProfilePhoto(selectedImageBytes) { imagePath ->
                         Firebase_Database.updateCurrentUser(
                             binding.editTextName.text.toString(),
                             imagePath
@@ -79,7 +74,7 @@ class ProfileFragment : Fragment() {
                 } else {
                     Firebase_Database.updateCurrentUser(
                         binding.editTextName.text.toString(),
-                        null
+                        null.toString()
                     )
 
                 }
@@ -104,7 +99,7 @@ class ProfileFragment : Fragment() {
             selectedImageBmp.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
             selectedImageBytes = outputStream.toByteArray()
             Log.d("onResult", selectedImageBytes.toString())
-            GlideApp.with(this)
+            Glide.with(this)
                 .load(selectedImageBytes)
                 .into(binding.imageViewProfilePicture)
             pictureJustChanged = true
@@ -120,8 +115,8 @@ class ProfileFragment : Fragment() {
                 binding.editTextName.setText(user.name)
                 if (!pictureJustChanged && user.profilePicturePath != null) {
 
-                    GlideApp.with(this)
-                        .load(StorageUtil.pathToReference(user.profilePicturePath))
+                    Glide.with(this)
+                        .load(Storage.pathToReference(user.profilePicturePath))
                         .placeholder(R.drawable.fui_ic_check_circle_black_128dp)
                         .into(binding.imageViewProfilePicture)
                 }else{

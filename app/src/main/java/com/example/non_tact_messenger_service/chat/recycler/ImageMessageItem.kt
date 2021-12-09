@@ -5,11 +5,8 @@ import com.bumptech.glide.Glide
 import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.Storage
 import com.example.non_tact_messenger_service.chat.model.ImageMessage
-import com.xwray.groupie.Item
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.item_image_message.*
-import kotlinx.android.synthetic.main.item_text_message.*
-import com.example.non_tact_messenger_service.glide.GlideModule
 
 
 class ImageMessageItem(val message: ImageMessage,

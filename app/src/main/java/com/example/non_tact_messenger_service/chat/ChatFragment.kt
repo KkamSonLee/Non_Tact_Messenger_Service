@@ -1,6 +1,7 @@
 package com.example.non_tact_messenger_service.chat
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -11,12 +12,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.non_tact_messenger_service.Firebase_Database
+import com.example.non_tact_messenger_service.MainActivity
+import com.example.non_tact_messenger_service.util.Firebase_Database
 import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.Storage
 import com.example.non_tact_messenger_service.chat.model.ImageMessage
 import com.example.non_tact_messenger_service.chat.model.TextMessage
-import com.example.non_tact_messenger_service.databinding.FragmentChatBinding
+import com.example.non_tact_messenger_service.chat.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ListenerRegistration
 import com.xwray.groupie.GroupAdapter
@@ -31,12 +33,16 @@ private const val RC_SELECT_IMAGE = 2
 
 class ChatFragment :Fragment() {
 
-
-    private lateinit var currentChannelId: String
-    private lateinit var messageListenerRegistration: ListenerRegistration
+    private lateinit var currentUser: User // 알림을 위한 User 변수
+    private lateinit var currentChannelId: String // 채널 아이디
+    private lateinit var otherUserID: String //채팅방 상대방 아이디
+    private lateinit var messageListenerRegistration: ListenerRegistration //FCM 알림을 위한 변수
     private var shouldInitRecyclerView = true // 리싸이클러뷰 구동을 위한 변수
     private lateinit var messagesSection: Section // 그루피 라이브러리를 위한 요소
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +52,11 @@ class ChatFragment :Fragment() {
 
 
         //supportActionBar?.title = intent.getStringExtra(AppConstants.USER_NAME) firebaseauth 사용자가 아닌 다른 사용자 아이디를 이전에 받아와야함
-        val otherUserID = "qUnZoyaFHpqbAIWtbf2B" // 임시로 상대방 사용자 id를 넣어줌
+        otherUserID = "qUnZoyaFHpqbAIWtbf2B" // 임시로 상대방 사용자 id를 넣어줌
+
+        Firebase_Database.getCurrentUser {
+            currentUser =  it
+        }
         Firebase_Database.getOrCreateChatChannel(otherUserID) { channelId -> // 파이어베이스에서 get하거나 create한 채널 아이디를 통해서 사용함
 
             currentChannelId = channelId
@@ -59,7 +69,9 @@ class ChatFragment :Fragment() {
             btn_sendmsg.setOnClickListener { // 전송버튼에 대한 클릭벤트
                 val messageToSend = TextMessage(
                     sendinput.text.toString(), Calendar.getInstance().time,
-                    "eurPdsswDs3rMG35hqM7", MessageType.TEXT
+                    FirebaseAuth.getInstance().currentUser!!.uid,
+                    otherUserID, currentUser.name,
+                    MessageType.TEXT
                 ) //FirebaseAuth.getInstance().currentUser!!.uid
 
                 sendinput.setText("") // 입력창을 비운다.
@@ -101,7 +113,9 @@ class ChatFragment :Fragment() {
 //                        otherUserId, currentUser.name)
                 val messageToSend = ImageMessage(
                     imagePath, Calendar.getInstance().time,
-                    "eurPdsswDs3rMG35hqM7" // 임시로 사용자 아이디 넣어줌
+                    FirebaseAuth.getInstance().currentUser!!.uid,
+                    otherUserID, currentUser.name,
+                    MessageType.IMAGE// 임시로 사용자 아이디 넣어줌
                 )
                 Firebase_Database.sendMessage(messageToSend, currentChannelId)
             }

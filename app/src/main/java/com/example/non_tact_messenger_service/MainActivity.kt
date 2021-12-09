@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 import splitties.toast.toast
 import android.R
 import androidx.fragment.app.Fragment
+import com.example.non_tact_messenger_service.chat.ChatFragment
 import com.example.non_tact_messenger_service.fragment.*
 
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     var fragment_Container =
-        listOf<Fragment>(ProfileFragment(), SignupFragment(), SelectFragment(), SearchFragment())
+        listOf<Fragment>(ProfileFragment(), SignupFragment(), SelectFragment(),ChatFragment())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.b3.setOnClickListener {
             fragmentChange(3)
+        }
+        binding.b4.setOnClickListener{
+            fragmentChange(4)
         }
 
     }

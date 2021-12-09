@@ -21,14 +21,18 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_patient.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_chat.xml" value="0.25" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_health_info.xml" value="0.1" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_search.xml" value="0.1" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_health_info.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_profile.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_search.xml" value="0.22" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_select.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/fragment_signup.xml" value="0.1" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/item_image_message.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Non_Tact_Messenger_Service/app/src/main/res/layout/item_text_message.xml" value="0.25" />
       </map>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/google-services.json" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
