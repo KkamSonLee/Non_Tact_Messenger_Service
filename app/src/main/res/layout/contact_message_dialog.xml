@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/gsans_light"
+            android:gravity="center"
+            android:text="제안할 내용을\n써주세요"
+            android:textColor="@color/black"
+            android:textSize="13pt" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_margin="30dp"
+            android:background="@drawable/textfield"
+            android:padding="10dp"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/seggestion_edit"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/white"
+                android:fontFamily="@font/gsans_medium"
+                android:hint="구체적으로 작성해주세요."
+                android:inputType="text"
+                android:gravity="top"
+                android:maxLines="5"
+                android:textColor="@color/black"
+                android:textSize="6pt"
+                />
+        </FrameLayout>
+</LinearLayout>

@@ -134,12 +134,7 @@ class ChatFragment :Fragment() {
             }
             shouldInitRecyclerView = false
         }
-
-
-
         fun updateItems() = messagesSection.update(messages)
-
-
         if (shouldInitRecyclerView)
             init()
         else

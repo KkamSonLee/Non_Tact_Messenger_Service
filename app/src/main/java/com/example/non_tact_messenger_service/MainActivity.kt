@@ -18,31 +18,27 @@ import com.example.non_tact_messenger_service.fragment.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    var intent_data:Int = 0
     private lateinit var auth: FirebaseAuth
     var fragment_Container =
-        listOf<Fragment>(ProfileFragment(), SignupFragment(), SelectFragment(),ChatFragment())
-
+        listOf<Fragment>(ProfileFragment(), SignupFragment(), SelectFragment(),ChatFragment(), DoctorCertifiedFragment(), HealthInfoFragment(), SearchFragment())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
         auth = Firebase.auth
-        binding.b1.setOnClickListener {
-            fragmentChange(1)
-
-        }
-        binding.b2.setOnClickListener {
+        if(intent.hasExtra("user")){
             fragmentChange(2)
-        }
-        binding.b3.setOnClickListener {
-            fragmentChange(3)
-        }
-        binding.b4.setOnClickListener{
-            fragmentChange(4)
+            intent_data= intent.getIntExtra("user", 0)
+        }else{
+            fragmentChange(1)
         }
 
+        setContentView(binding.root)
     }
-
+    // 환자 - 구분 - > 회원가입 - > 건강정보 기입 -> 건강정보 리스트 and 채팅방(의사 프로필보기)
+    // 환자(로그인 이후) - 건강정보 기입 and 건강정보 리스트 and 채팅방
+    // 의료인 - 구분 -> 회원가입 -> 의료인 인증 -> 내 프로필 기입 -> 환자 건강정보 리스트 and 채팅방
+    // 의료인(로그인 이후) - 환자 건강정보 리스트 and 채팅방
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
@@ -50,7 +46,6 @@ class MainActivity : AppCompatActivity() {
             reload();
         }
     }
-
     private fun createAccount(email: String, password: String) {
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
@@ -80,14 +75,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-
     }
 
     private fun reload() {
-
     }
-
-
 
     fun fragmentChange(index: Int) {
         supportFragmentManager.beginTransaction()
