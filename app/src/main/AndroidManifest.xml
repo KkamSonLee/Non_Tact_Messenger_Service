@@ -9,11 +9,15 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:theme="@style/Theme.Design.Light.NoActionBar">
+        android:theme="@style/Theme.Design.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ChoiceActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
@@ -35,28 +39,31 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
             <intent-filter>
-                <action android:name="MainActivity"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="MainActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <!--FCM-->
+            android:value="@integer/google_play_services_version" /> <!-- FCM -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_baseline_message_24" />
-        <service android:name=".notification.FirebaseMessageService"
+
+        <service
+            android:name=".notification.FirebaseMessageService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".notification.FirebaseIDService"
+        <service
+            android:name=".notification.FirebaseIDService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".fragment.ProfileFragment">
 
@@ -24,22 +24,17 @@
         android:hint="My Name" />
 
     <EditText
-        android:id="@+id/editText_email"
+        android:id="@+id/editText_department"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:hint="My Email" />
+        android:hint="My Department" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="center"
-        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_save"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -50,16 +45,4 @@
             android:backgroundTint="?attr/colorAccent"
             android:text="Save" />
 
-        <Button
-            android:id="@+id/btn_sign_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="?attr/colorPrimaryDark"
-            android:text="Sign Out" />
-    </LinearLayout>
 </LinearLayout>

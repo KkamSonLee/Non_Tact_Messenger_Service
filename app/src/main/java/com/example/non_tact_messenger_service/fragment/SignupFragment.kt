@@ -3,15 +3,20 @@ package com.example.non_tact_messenger_service.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.example.non_tact_messenger_service.util.Firebase_Database
 import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.R
+import com.example.non_tact_messenger_service.WebAppInterface
+import com.example.non_tact_messenger_service.databinding.FragmentDoctorCertifiedBinding
 import com.example.non_tact_messenger_service.databinding.FragmentSignupBinding
 import com.example.non_tact_messenger_service.notification.FirebaseIDService
 import com.example.non_tact_messenger_service.notification.FirebaseMessageService
@@ -27,14 +32,13 @@ import splitties.fragments.addToBackStack
 import splitties.fragments.start
 
 
-
-
 class SignupFragment : Fragment() {
-                private val RC_SIGN_IN = 1
-                lateinit var binding: FragmentSignupBinding
-                private val signInProviders =
-                    listOf(
-                        AuthUI.IdpConfig.EmailBuilder()
+    private val RC_SIGN_IN = 1
+    lateinit var binding: FragmentSignupBinding
+    var receive_data:Int = 0
+    private val signInProviders =
+        listOf(
+            AuthUI.IdpConfig.EmailBuilder()
                 .setAllowNewAccounts(true)
                 .setRequireName(true)
                 .build()
@@ -45,6 +49,11 @@ class SignupFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = activity as MainActivity
+        if(mainActivity?.intent_data==0){
+            Log.d("user", "null")
+        }else{
+            receive_data = mainActivity?.intent_data!!
+        }
     }
 
     // 메인 액티비티에서 내려온다.
@@ -52,13 +61,13 @@ class SignupFragment : Fragment() {
         super.onDetach()
         mainActivity = null
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignupBinding.inflate(layoutInflater, container, false)
         binding.joinBtn.setOnClickListener {
-            mainActivity?.fragmentChange(2)
             val intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(signInProviders)
                 .setIsSmartLockEnabled(false)
@@ -84,7 +93,7 @@ class SignupFragment : Fragment() {
                 }
             }
 
-        }else if (resultCode == Activity.RESULT_CANCELED) {
+        } else if (resultCode == Activity.RESULT_CANCELED) {
             val response = IdpResponse.fromResultIntent(data)
             if (response == null) return
             when (response.error?.errorCode) {
@@ -95,4 +104,6 @@ class SignupFragment : Fragment() {
             }
         }
     }
+
+
 }

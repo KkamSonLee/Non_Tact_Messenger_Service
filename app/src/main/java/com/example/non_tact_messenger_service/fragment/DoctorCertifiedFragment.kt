@@ -1,28 +1,28 @@
-package com.example.non_tact_messenger_service
+package com.example.non_tact_messenger_service.fragment
 
-import android.content.Context
 import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.webkit.JavascriptInterface
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.example.non_tact_messenger_service.databinding.ActivityDoctorBinding
-import org.jsoup.Jsoup
-import splitties.toast.toast
-import java.util.regex.Matcher
-import java.util.regex.Pattern
+import com.example.non_tact_messenger_service.R
+import com.example.non_tact_messenger_service.WebAppInterface
+import com.example.non_tact_messenger_service.databinding.FragmentDoctorCertifiedBinding
 
-class Doctor_Activity : AppCompatActivity() {
-    lateinit var binding: ActivityDoctorBinding
-    var isComplete = false
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDoctorBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+class DoctorCertifiedFragment : Fragment() {
+    lateinit var binding: FragmentDoctorCertifiedBinding
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentDoctorCertifiedBinding.inflate(layoutInflater, container, false)
         init()
+        return binding.root
     }
 
     fun init() {
@@ -36,9 +36,8 @@ class Doctor_Activity : AppCompatActivity() {
                 super.onPageStarted(view, url, favicon)
                 view?.loadUrl("javascript:window.Android.getHtml(document.getElementsByTagName('table')[0].innerHTML);")
                 var is_cv = web.getHtml(view?.url.toString())
-                //Log.d("ddd", is_cv.toString())
+                Log.d("ddd", is_cv.toString())
             }
         }
     }
-
 }

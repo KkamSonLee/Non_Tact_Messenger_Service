@@ -13,11 +13,10 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             if (FirebaseAuth.getInstance().currentUser == null)
-                start<MainActivity>()
+                start<ChoiceActivity>()
             else
                 start<MainActivity>()
             finish()
         }, 2000L)
     }
-
 }

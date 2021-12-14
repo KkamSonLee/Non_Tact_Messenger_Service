@@ -49,6 +49,8 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
+
+        return binding.root
         binding.apply {
             imageViewProfilePicture.setOnClickListener {
                 val intent = Intent().apply {
@@ -79,15 +81,7 @@ class ProfileFragment : Fragment() {
 
                 }
             }
-            binding.btnSignOut.setOnClickListener {
-                AuthUI.getInstance()
-                    .signOut(this@ProfileFragment.context!!)
-                    .addOnCompleteListener {
-                        mainActivity?.fragmentChange(2)
-                    }
-            }
         }
-        return binding.root
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -119,7 +113,7 @@ class ProfileFragment : Fragment() {
                         .load(Storage.pathToReference(user.profilePicturePath))
                         .placeholder(R.drawable.fui_ic_check_circle_black_128dp)
                         .into(binding.imageViewProfilePicture)
-                }else{
+                } else {
                     Log.d("status", pictureJustChanged.toString())
                     Log.d("status", user.profilePicturePath.toString())
                 }
@@ -127,3 +121,4 @@ class ProfileFragment : Fragment() {
         }
     }
 }
+
