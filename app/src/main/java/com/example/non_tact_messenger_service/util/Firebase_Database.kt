@@ -68,28 +68,32 @@ object Firebase_Database {
         }
     }
 
-    fun getHealthInfo(): MutableList<Item_HealthInfo> {
-        var User_info = mutableListOf<Item_HealthInfo>()
+    fun getHealthInfo(data:ArrayList<Item_HealthInfo>): ArrayList<Item_HealthInfo> {
         firestoreInstance.collection("Users").get().addOnSuccessListener {
+            data.clear()
             for (document in it) {
                 firestoreInstance.collection("Users").document(document.id).get()
                     .addOnSuccessListener {
-                        var user = (it.toObject(Patient::class.java))
+                        var user = (it.toObject(Patient::class.java)!!)
                         if (!(user!!.base_user.userType)) {
                             Log.d("data1", user.health_detail)
                             Log.d("data2", user.health_title)
-                            User_info.add(
+                            data.add(
                                 Item_HealthInfo(
                                     user.health_title,
                                     user.health_detail,
                                     document.id
                                 )
                             )
+                            Log.d("data1",data[0].uid.toString())
                         }
+                        Log.d("datsasadasdasdassdaasdasdsd","1111111")
                     }
+                Log.d("datsadaasdasdsd","1111111")
             }
+            Log.d("datsadasd","1111111")
         }
-        return User_info
+        return data
     }
 
     fun updateCurrentUser(name: String = "", bio: String = "") {

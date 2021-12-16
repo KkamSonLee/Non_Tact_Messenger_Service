@@ -18,6 +18,7 @@ import com.example.non_tact_messenger_service.util.Firebase_Database
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SelectFragment : Fragment() {  //환자 리스트 선택
 
@@ -25,16 +26,20 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
     lateinit var binding: FragmentSelectBinding
     lateinit var adapter: RecyclerviewPatientHealthAdapter
     lateinit var binding_dialog: ContactMessageDialogBinding
-    lateinit var user_info:MutableList<Item_HealthInfo>
-    var data = mutableListOf<Item_HealthInfo>()
+    lateinit var data : ArrayList<Item_HealthInfo>
     val scope = CoroutineScope(Dispatchers.IO)//
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        data = ArrayList<Item_HealthInfo>()
         binding = FragmentSelectBinding.inflate(layoutInflater, container, false)
-        user_info = mutableListOf(Item_HealthInfo())
-        adapter = RecyclerviewPatientHealthAdapter(user_info)
+        adapter = RecyclerviewPatientHealthAdapter(data)
+        binding.swipe.setOnRefreshListener {
+            binding.swipe.isRefreshing = true
+            getHealthInfo()
+        }
+
         adapter.itemOnClickListener = object : RecyclerviewPatientHealthAdapter.OnItemClickListener{
             override fun OnItemClick(
                 holder: RecyclerView.ViewHolder,
@@ -57,13 +62,18 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
             }
         }
         binding.patientListview.adapter = adapter
+        getHealthInfo()
         return binding.root
     }
-    fun getHealthInfo(){
+    private fun getHealthInfo(){
         scope.launch {
-            user_info = Firebase_Database.getHealthInfo()
-            adapter = RecyclerviewPatientHealthAdapter(user_info)
-            adapter.notifyDataSetChanged()
+            var temp = data
+            data.addAll(Firebase_Database.getHealthInfo(temp))
+            withContext(Dispatchers.Main) {
+                adapter.notifyDataSetChanged()
+                binding.swipe.isRefreshing = false
+//                Log.d("data3",data[0].health_detail.toString())
+            }
         }
     }
 }
