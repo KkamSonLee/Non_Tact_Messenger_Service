@@ -185,6 +185,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun updateRecyclerView(messages: List<Item>) { // 해당 함수에서 리싸이클러뷰의 레이아웃 매니저설정과 어댑터를 달아줌
+
         fun init() {
             chatrecycler.apply {
                 layoutManager = LinearLayoutManager(this@ChatFragment.context) // 리싸이클러뷰 레이아웃 매니저
@@ -205,7 +206,7 @@ class ChatFragment : Fragment() {
         fun updateItems() = messagesSection.update(messages)
         if (shouldInitRecyclerView)
             init()
-        else{
+        else {
             updateItems()
             if(!mysending) {
                 (activity as MainActivity).Notification()
