@@ -154,6 +154,7 @@ class ChatFragment : Fragment() {
                 )
             }
         }
+
         return inflater.inflate(R.layout.fragment_chat, container, false)
     }
 
@@ -207,12 +208,10 @@ class ChatFragment : Fragment() {
             shouldInitRecyclerView = false
         }
 
-        fun updateItems() {
-            messagesSection.update(messages)
-        }
+        fun updateItems() = messagesSection.update(messages)
         if (shouldInitRecyclerView)
             init()
-        else {
+        else{
             updateItems()
         }
         chatrecycler.scrollToPosition(chatrecycler.adapter!!.itemCount - 1)
