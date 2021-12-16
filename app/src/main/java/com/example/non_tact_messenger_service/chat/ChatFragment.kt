@@ -50,6 +50,7 @@ class ChatFragment : Fragment() {
     private var shouldInitRecyclerView = true // 리싸이클러뷰 구동을 위한 변수
     private lateinit var messagesSection: Section // 그루피 라이브러리를 위한 요소
     lateinit var binding: DoctorProfileDialogBinding
+    var mysending: Boolean = false;
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -124,7 +125,6 @@ class ChatFragment : Fragment() {
                 val dlg = AlertDialog.Builder(requireContext())
                 dlg.setView(binding!!.root)
                 dlg.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
-
                 })
                 dlg.setNegativeButton("취소", null)
                 dlg.show()
@@ -136,7 +136,7 @@ class ChatFragment : Fragment() {
                     otherUserID, Username,
                     MessageType.TEXT
                 ) //FirebaseAuth.getInstance().currentUser!!.uid
-
+                mysending = true
                 sendinput.setText("") // 입력창을 비운다.
                 Firebase_Database.sendMessage(messageToSend, channelId) // 파이어베이스에 메세지를 전송
             }
@@ -148,6 +148,7 @@ class ChatFragment : Fragment() {
                     action = Intent.ACTION_GET_CONTENT
                     putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
                 }
+                mysending = true
                 startActivityForResult(
                     Intent.createChooser(intent, "Select Image"),
                     RC_SELECT_IMAGE
@@ -157,7 +158,6 @@ class ChatFragment : Fragment() {
 
         return inflater.inflate(R.layout.fragment_chat, container, false)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_SELECT_IMAGE && resultCode == Activity.RESULT_OK &&
@@ -197,7 +197,7 @@ class ChatFragment : Fragment() {
                 adapter = GroupAdapter<GroupieViewHolder>().apply {
                     messagesSection = Section(messages) // 어댑터에 아이템들을 넣어줌
                     if (!Firebase_Database.is_enabled) {
-                        if (messagesSection.itemCount >= 2) {
+                        if (messagesSection.itemCount>= 2) {
                             Firebase_Database.is_enabled = true
                             sendinput.isEnabled = true
                         }
@@ -213,8 +213,12 @@ class ChatFragment : Fragment() {
             init()
         else {
             updateItems()
+            if(!mysending) {
+                (activity as MainActivity).Notification()
+            }else{
+                mysending = false
+            }
         }
-        (activity as MainActivity).Notification()
         chatrecycler.scrollToPosition(chatrecycler.adapter!!.itemCount - 1)
     }
 }

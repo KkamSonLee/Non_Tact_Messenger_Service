@@ -86,7 +86,7 @@ class SignupFragment : Fragment() {
                 val auth = FirebaseAuth.getInstance().currentUser
                 if(receive_data){  //의사일때
                     Firebase_Database.currentUserDocRef.get().addOnSuccessListener {
-                        if(!(it["license"].toString().isNullOrEmpty())){
+                        if(!(it["license"].toString().isNullOrBlank())){
                             Firebase_Database.initDoctorUser {
                                 val registrationToken = FirebaseMessaging.getInstance().token
                                 FirebaseIDService.addTokenToFirestore(registrationToken.toString())
