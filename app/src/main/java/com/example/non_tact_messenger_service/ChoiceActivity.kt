@@ -13,7 +13,7 @@ class ChoiceActivity : AppCompatActivity() {
         setContentView(binding.root)
         val intent = Intent(this, MainActivity::class.java)
         binding.doctorBtn.setOnClickListener {
-            intent.putExtra("user", 1)
+            intent.putExtra("user", true)
             startActivity(intent)
             finish()
         }

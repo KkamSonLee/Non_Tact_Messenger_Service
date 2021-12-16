@@ -19,7 +19,7 @@ import com.example.non_tact_messenger_service.util.Firebase_Database
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    var intent_data:Int = 0
+    var intent_data:Boolean = false
     var healthTitle:String = ""
     private lateinit var auth: FirebaseAuth
     var fragment_Container =
@@ -31,12 +31,12 @@ class MainActivity : AppCompatActivity() {
         Firebase_Database.getHealthInfo()
         if(intent.hasExtra("user")){
             fragmentChange(2)
-            intent_data= intent.getIntExtra("user", 0)
-        }else{
+            intent_data= intent.getBooleanExtra("user", false)
+        }else{    //의사인거 파이어스토어에서 확인해야함
             Firebase_Database.getCurrentUser {
 
             }
-            fragmentChange(5)
+            fragmentChange(3)
         }
         setContentView(binding.root)
     }

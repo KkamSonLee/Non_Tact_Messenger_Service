@@ -35,7 +35,7 @@ import splitties.fragments.start
 class SignupFragment : Fragment() {
     private val RC_SIGN_IN = 1
     lateinit var binding: FragmentSignupBinding
-    var receive_data:Int = 0 //
+    var receive_data:Boolean = false //
     private val signInProviders =
         listOf(
             AuthUI.IdpConfig.EmailBuilder()
@@ -49,7 +49,7 @@ class SignupFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = activity as MainActivity
-        if(mainActivity?.intent_data==0){
+        if(mainActivity?.intent_data==false){
             Log.d("user", "null")
         }else{
             receive_data = mainActivity?.intent_data!!
@@ -84,11 +84,14 @@ class SignupFragment : Fragment() {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 val auth = FirebaseAuth.getInstance().currentUser
-                Firebase_Database.initCurrentUser {
+                if(receive_data){
 
-                    val registrationToken = FirebaseMessaging.getInstance().token
-                    FirebaseIDService.addTokenToFirestore(registrationToken.toString())
-                    mainActivity?.fragmentChange(3)
+                    Firebase_Database.initDoctorUser {
+
+                        val registrationToken = FirebaseMessaging.getInstance().token
+                        FirebaseIDService.addTokenToFirestore(registrationToken.toString())
+                        mainActivity?.fragmentChange(5)
+                    }
                 }
             }
 

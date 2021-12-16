@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.view.get
+import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.WebAppInterface
 import com.example.non_tact_messenger_service.WebCommunication
 import com.example.non_tact_messenger_service.databinding.FragmentDoctorCertifiedBinding
@@ -43,6 +44,7 @@ class DoctorCertifiedFragment : Fragment() {
                 super.onPageFinished(view, url)
                 if (WebCommunication.getLicenseNumber() != "") {
                     Log.d("License_Number", WebCommunication.getLicenseNumber())
+                    (activity as MainActivity).fragmentChange(3)
                 }
             }
         }
