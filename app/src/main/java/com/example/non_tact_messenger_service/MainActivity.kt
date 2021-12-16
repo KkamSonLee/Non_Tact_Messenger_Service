@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
                 userType = false
             }
         } else {
-
             FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser!!.uid).get()
                 .addOnSuccessListener {

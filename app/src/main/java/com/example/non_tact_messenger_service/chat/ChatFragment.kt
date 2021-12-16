@@ -108,18 +108,25 @@ class ChatFragment : Fragment() {
             hire_btn.setOnClickListener {
                 Firebase_Database.is_enabled = true
                 sendinput.isEnabled = true
+                val messageToSend = TextMessage(
+                    "고용되었습니다.", Calendar.getInstance().time,
+                    FirebaseAuth.getInstance().currentUser!!.uid,
+                    otherUserID, Username,
+                    MessageType.TEXT
+                ) //FirebaseAuth.getInstance().currentUser!!.uid
+                Firebase_Database.sendMessage(messageToSend, channelId)
                 Toast.makeText(context, "고용되었습니다!", Toast.LENGTH_SHORT).show()
+            }
+            if ((activity as MainActivity).userType) {
+                hire_btn.visibility = View.INVISIBLE
+                profile_btn.visibility = View.INVISIBLE
+            }else{
+                hire_btn.visibility = View.VISIBLE
+                profile_btn.visibility = View.VISIBLE
             }
             profile_btn.setOnClickListener {
                 val dlg = AlertDialog.Builder(requireContext())
                 dlg.setView(binding!!.root)
-                if ((activity as MainActivity).userType) {
-                    hire_btn.visibility = View.INVISIBLE
-                    profile_btn.visibility = View.INVISIBLE
-                }else{
-                    hire_btn.visibility = View.VISIBLE
-                    profile_btn.visibility = View.VISIBLE
-                }
                 dlg.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
 
                 })
@@ -191,6 +198,12 @@ class ChatFragment : Fragment() {
                 layoutManager = LinearLayoutManager(this@ChatFragment.context) // 리싸이클러뷰 레이아웃 매니저
                 adapter = GroupAdapter<GroupieViewHolder>().apply {
                     messagesSection = Section(messages) // 어댑터에 아이템들을 넣어줌
+                    if(!Firebase_Database.is_enabled){
+                        if(messagesSection.groups.size>=2){
+                            Firebase_Database.is_enabled = true
+                            sendinput.isEnabled = true
+                        }
+                    }
                     add(messagesSection)
                 }
             }
@@ -200,8 +213,9 @@ class ChatFragment : Fragment() {
         fun updateItems() = messagesSection.update(messages)
         if (shouldInitRecyclerView)
             init()
-        else
+        else{
             updateItems()
+        }
 
         (activity as MainActivity).Notification()
         chatrecycler.scrollToPosition(chatrecycler.adapter!!.itemCount - 1)
