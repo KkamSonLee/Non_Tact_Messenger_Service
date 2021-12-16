@@ -10,6 +10,8 @@ import com.example.non_tact_messenger_service.chat.model.User
 import com.example.non_tact_messenger_service.chat.recycler.ImageMessageItem
 import com.example.non_tact_messenger_service.chat.recycler.TextMessageItem
 import com.example.non_tact_messenger_service.model.Doctor
+import com.example.non_tact_messenger_service.model.HealthInfo
+import com.example.non_tact_messenger_service.model.Item_HealthInfo
 import com.example.non_tact_messenger_service.model.Patient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -31,7 +33,7 @@ object Firebase_Database {
     private val chatChannelsCollectionRef = firestoreInstance.collection("chat_room")
 //    private val currentUserDocRef: DocumentReference
 //        get() = firestoreInstance.document("/Users/eurPdsswDs3rMG35hqM7") //테스트용
-    
+
     fun initPatientUser(onComplete: () -> Unit) {
         currentUserDocRef.get().addOnSuccessListener { documentSnapshot ->
             if (!documentSnapshot.exists()) {
@@ -40,7 +42,7 @@ object Firebase_Database {
                     "", false
                 )
                 val newPatient = Patient(
-                    newUser, mutableListOf(), mutableListOf()
+                    newUser, mutableListOf(), "", ""
                 )
                 currentUserDocRef.set(newPatient).addOnSuccessListener {
                     onComplete()
@@ -57,7 +59,7 @@ object Firebase_Database {
                     FirebaseAuth.getInstance().currentUser?.displayName ?: "",
                     "", true
                 )
-                val newDoctor = Doctor(newUser, mutableListOf(),"")
+                val newDoctor = Doctor(newUser, mutableListOf(), "")
                 currentUserDocRef.set(newDoctor).addOnSuccessListener {
                     onComplete()
                 }
@@ -65,13 +67,27 @@ object Firebase_Database {
                 onComplete()
         }
     }
-    fun getHealthInfo() {
+
+    fun getHealthInfo(): MutableList<Item_HealthInfo> {
+        var User_info = mutableListOf<Item_HealthInfo>()
         firestoreInstance.collection("Users").get().addOnSuccessListener {
             for (document in it) {
-                firestoreInstance.collection("Users").document(document.id).get().addOnSuccessListener {
-                }
+                firestoreInstance.collection("Users").document(document.id).get()
+                    .addOnSuccessListener {
+                        var user = (it.toObject(Patient::class.java))
+                        if (!(user!!.base_user.userType)) {
+                            User_info.add(
+                                Item_HealthInfo(
+                                    user.health_title,
+                                    user.health_detail,
+                                    document.id
+                                )
+                            )
+                        }
+                    }
             }
         }
+        return User_info
     }
 
     fun updateCurrentUser(name: String = "", bio: String = "") {
@@ -83,8 +99,8 @@ object Firebase_Database {
 
     fun setPatientUser(health_title: String, health_detail: String) {
         val userFieldMap = mutableMapOf<String, Any>()
-        if (health_title.isNotBlank()) userFieldMap["health_title"] = health_title
-        if (health_detail.isNotBlank()) userFieldMap["health_detail"] = health_detail
+        if (health_title.isNotBlank() && health_detail.isNotBlank()) userFieldMap["health_title"] =
+            HealthInfo(health_title, health_detail)
         currentUserDocRef.update(userFieldMap)
     }
 

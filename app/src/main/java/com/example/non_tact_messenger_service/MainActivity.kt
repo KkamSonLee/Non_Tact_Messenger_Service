@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.non_tact_messenger_service.chat.ChatFragment
 import com.example.non_tact_messenger_service.chat.model.User
 import com.example.non_tact_messenger_service.fragment.*
+import com.example.non_tact_messenger_service.util.Firebase_Database
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -26,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         auth = Firebase.auth
-        //Firebase_Database.getHealthInfo()
         if(intent.hasExtra("user")){
             if(intent.getBooleanExtra("user", false)){
                 fragmentChange(2)

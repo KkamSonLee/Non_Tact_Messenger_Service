@@ -16,6 +16,8 @@ import com.example.non_tact_messenger_service.RecyclerviewPatientHealthAdapter
 import com.example.non_tact_messenger_service.databinding.ContactMessageDialogBinding
 import com.example.non_tact_messenger_service.databinding.FragmentSelectBinding
 import com.example.non_tact_messenger_service.model.HealthInfo
+import com.example.non_tact_messenger_service.model.Item_HealthInfo
+import com.example.non_tact_messenger_service.util.Firebase_Database
 
 class SelectFragment : Fragment() {  //환자 리스트 선택
 
@@ -23,24 +25,20 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
     lateinit var binding: FragmentSelectBinding
     lateinit var adapter: RecyclerviewPatientHealthAdapter
     lateinit var binding_dialog: ContactMessageDialogBinding
-    var data = ArrayList<HealthInfo>()
+    var data = ArrayList<Item_HealthInfo>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSelectBinding.inflate(layoutInflater, container, false)
-
-        data.add(HealthInfo("sadas", "sadsadsa", ""))
-        data.add(HealthInfo("ㅁㄴㅇㅁㄴ", "sadasdasd", ""))
-        data.add(HealthInfo("ㄴㅁ", "가나다라", ""))
-        data.add(HealthInfo("ㅁㄴㅇㄴㅁㅇ", "마바사", ""))
+        data.addAll(Firebase_Database.getHealthInfo())
 
         adapter = RecyclerviewPatientHealthAdapter(data)
         adapter.itemOnClickListener = object : RecyclerviewPatientHealthAdapter.OnItemClickListener{
             override fun OnItemClick(
                 holder: RecyclerView.ViewHolder,
                 view: View,
-                data: HealthInfo,
+                data: Item_HealthInfo,
                 position: Int
             ) {
                 //Log.d("suggestion", "success")

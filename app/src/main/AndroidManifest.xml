@@ -32,12 +32,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Doctor_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".Patient_Activity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
