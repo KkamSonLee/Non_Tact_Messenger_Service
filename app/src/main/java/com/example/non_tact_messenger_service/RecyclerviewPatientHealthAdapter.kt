@@ -33,13 +33,7 @@ class RecyclerviewPatientHealthAdapter(
     @SuppressLint("RestrictedApi")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        var name:String = ""
-        FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).get().addOnSuccessListener {
-            var user = it.get("base_user")
-            val objec = user as MutableMap<String, Any>
-            name = objec["name"] as String
-        }
-        holder.health_title.text = name+"-"+item.health_title
+        holder.health_title.text = item.health_title
         holder.health_detail.text = item.health_detail
     }
 

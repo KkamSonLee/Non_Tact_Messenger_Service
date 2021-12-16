@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     var healthTitle:String = ""
     var userType:Boolean = false
     private lateinit var auth: FirebaseAuth
+    lateinit var otherUID: String
     var fragment_Container =
         listOf<Fragment>(ProfileFragment(), SignupFragment(), SelectFragment(),ChatFragment(), DoctorCertifiedFragment(), HealthInfoFragment(), SearchFragment())
     override fun onCreate(savedInstanceState: Bundle?) {
