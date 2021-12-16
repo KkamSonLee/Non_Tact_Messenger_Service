@@ -190,14 +190,14 @@ class ChatFragment : Fragment() {
     }
 
     private fun updateRecyclerView(messages: List<Item>) { // 해당 함수에서 리싸이클러뷰의 레이아웃 매니저설정과 어댑터를 달아줌
-        (activity as MainActivity).Notification()
+
         fun init() {
             chatrecycler.apply {
                 layoutManager = LinearLayoutManager(this@ChatFragment.context) // 리싸이클러뷰 레이아웃 매니저
                 adapter = GroupAdapter<GroupieViewHolder>().apply {
                     messagesSection = Section(messages) // 어댑터에 아이템들을 넣어줌
                     if (!Firebase_Database.is_enabled) {
-                        if (messagesSection.groups.size >= 2) {
+                        if (messagesSection.itemCount >= 2) {
                             Firebase_Database.is_enabled = true
                             sendinput.isEnabled = true
                         }
@@ -211,9 +211,10 @@ class ChatFragment : Fragment() {
         fun updateItems() = messagesSection.update(messages)
         if (shouldInitRecyclerView)
             init()
-        else{
+        else {
             updateItems()
         }
+        (activity as MainActivity).Notification()
         chatrecycler.scrollToPosition(chatrecycler.adapter!!.itemCount - 1)
     }
 }

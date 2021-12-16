@@ -42,11 +42,12 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
         data = ArrayList<Item_HealthInfo>()
         binding = FragmentSelectBinding.inflate(layoutInflater, container, false)
         adapter = RecyclerviewPatientHealthAdapter(data)
+        getHealthInfo()
+
         binding.swipe.setOnRefreshListener {
             binding.swipe.isRefreshing = true
             getHealthInfo()
         }
-
         adapter.itemOnClickListener =
             object : RecyclerviewPatientHealthAdapter.OnItemClickListener {
                 override fun OnItemClick(
@@ -72,8 +73,8 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
                     dlg.show()
                 }
             }
+        adapter.notifyDataSetChanged()
         binding.patientListview.adapter = adapter
-        getHealthInfo()
         return binding.root
     }
 
@@ -83,7 +84,6 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
             FirebaseFirestore.getInstance().collection("Users").get().addOnSuccessListener {
                 data.clear()
                 for (document in it) {
-
                     FirebaseFirestore.getInstance().collection("Users").document(document.id).get()
                         .addOnSuccessListener {
                             var user = (it.toObject(Patient::class.java)!!)
