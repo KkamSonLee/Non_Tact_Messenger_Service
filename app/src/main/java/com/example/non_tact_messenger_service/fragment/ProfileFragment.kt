@@ -58,10 +58,10 @@ class ProfileFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d("onStart", "buffering")
-        Firebase_Database.getCurrentUser { user ->
+        Firebase_Database.getDoctorUser { user ->
             if (this@ProfileFragment.isVisible) {
-                binding.editTextName.setText(user.name)
-                binding.editTextDepartment.setText(user.bio)
+                binding.editTextName.setText(user.base_user.name)
+                binding.editTextDepartment.setText(user.base_user.bio)
 
             }
         }

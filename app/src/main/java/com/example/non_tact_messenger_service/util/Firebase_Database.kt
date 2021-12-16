@@ -67,10 +67,8 @@ object Firebase_Database {
     }
     fun getHealthInfo() {
         firestoreInstance.collection("Users").get().addOnSuccessListener {
-
             for (document in it) {
-                firestoreInstance.collection("Users").document(document.id)
-                    .collection("chating_room").document().get().addOnSuccessListener {
+                firestoreInstance.collection("Users").document(document.id).get().addOnSuccessListener {
                 }
             }
         }
@@ -87,16 +85,22 @@ object Firebase_Database {
         val userFieldMap = mutableMapOf<String, Any>()
         if (health_title.isNotBlank()) userFieldMap["health_title"] = health_title
         if (health_detail.isNotBlank()) userFieldMap["health_detail"] = health_detail
-        currentUserDocRef.collection("healthinfo").document().set(userFieldMap)
+        currentUserDocRef.update(userFieldMap)
     }
 
-    fun getCurrentUser(onComplete: (User) -> Unit) {
+    fun getDoctorUser(onComplete: (Doctor) -> Unit) {
         currentUserDocRef.get()
             .addOnSuccessListener {
-                onComplete(it.toObject(User::class.java)!!)
+                onComplete(it.toObject(Doctor::class.java)!!)
             }
     }
 
+    fun getPatientUser(onComplete: (Patient) -> Unit) {
+        currentUserDocRef.get()
+            .addOnSuccessListener {
+                onComplete(it.toObject(Patient::class.java)!!)
+            }
+    }
 
 //    fun addUsersListener(context: Context, onListen: (List<Item>) -> Unit): ListenerRegistration {
 //        return firestoreInstance.collection("users")

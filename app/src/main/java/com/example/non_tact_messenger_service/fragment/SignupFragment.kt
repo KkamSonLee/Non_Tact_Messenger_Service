@@ -94,7 +94,7 @@ class SignupFragment : Fragment() {
                     Firebase_Database.initPatientUser {
                         val registrationToken = FirebaseMessaging.getInstance().token
                         FirebaseIDService.addTokenToFirestore(registrationToken.toString())
-                        mainActivity?.fragmentChange(6)
+                        mainActivity?.fragmentChange(7)
                     }
 
                 }

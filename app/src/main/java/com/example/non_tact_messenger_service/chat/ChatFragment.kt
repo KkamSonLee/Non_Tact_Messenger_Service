@@ -19,6 +19,8 @@ import com.example.non_tact_messenger_service.Storage
 import com.example.non_tact_messenger_service.chat.model.ImageMessage
 import com.example.non_tact_messenger_service.chat.model.TextMessage
 import com.example.non_tact_messenger_service.chat.model.User
+import com.example.non_tact_messenger_service.model.Doctor
+import com.example.non_tact_messenger_service.model.Patient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ListenerRegistration
 import com.xwray.groupie.GroupAdapter
@@ -31,9 +33,11 @@ import java.util.*
 
 private const val RC_SELECT_IMAGE = 2
 
-class ChatFragment :Fragment() {
+class ChatFragment : Fragment() {
 
-    private lateinit var currentUser: User // 알림을 위한 User 변수
+    private lateinit var DoctorUser: Doctor // 알림을 위한 User 변수
+    private lateinit var PatientUser: Patient // 알림을 위한 User 변수
+    private lateinit var Username: String
     private lateinit var currentChannelId: String // 채널 아이디
     private lateinit var otherUserID: String //채팅방 상대방 아이디
     private lateinit var messageListenerRegistration: ListenerRegistration //FCM 알림을 위한 변수
@@ -53,16 +57,28 @@ class ChatFragment :Fragment() {
 
         //supportActionBar?.title = intent.getStringExtra(AppConstants.USER_NAME) firebaseauth 사용자가 아닌 다른 사용자 아이디를 이전에 받아와야함
         otherUserID = "qUnZoyaFHpqbAIWtbf2B" // 임시로 상대방 사용자 id를 넣어줌
+        if ((activity as MainActivity).userType) {
 
-        Firebase_Database.getCurrentUser {
-            currentUser =  it
+            Firebase_Database.getDoctorUser {
+                DoctorUser = it
+                Username = it.base_user.name
+            }
+        } else {
+            Firebase_Database.getPatientUser {
+                PatientUser = it
+                Username = it.base_user.name
+            }
         }
         Firebase_Database.getOrCreateChatChannel(otherUserID) { channelId -> // 파이어베이스에서 get하거나 create한 채널 아이디를 통해서 사용함
 
             currentChannelId = channelId
 
             messageListenerRegistration =
-                Firebase_Database.addChatMessagesListener(channelId, this.activity, this::updateRecyclerView) // observer를 달아줌
+                Firebase_Database.addChatMessagesListener(
+                    channelId,
+                    this.activity,
+                    this::updateRecyclerView
+                ) // observer를 달아줌
 
             //val sendbtn = view.findViewById<Button>(R.id.btn_sendmsg)
 
@@ -70,7 +86,8 @@ class ChatFragment :Fragment() {
                 val messageToSend = TextMessage(
                     sendinput.text.toString(), Calendar.getInstance().time,
                     FirebaseAuth.getInstance().currentUser!!.uid,
-                    otherUserID, currentUser.name,
+                    otherUserID,
+                    Username,
                     MessageType.TEXT
                 ) //FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -80,12 +97,15 @@ class ChatFragment :Fragment() {
 
 
             btn_sendimg.setOnClickListener {
-                val intent = Intent().apply{
+                val intent = Intent().apply {
                     type = "image/*"
                     action = Intent.ACTION_GET_CONTENT
                     putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
                 }
-                startActivityForResult(Intent.createChooser(intent, "Select Image"), RC_SELECT_IMAGE)
+                startActivityForResult(
+                    Intent.createChooser(intent, "Select Image"),
+                    RC_SELECT_IMAGE
+                )
             }
         }
 
@@ -95,7 +115,8 @@ class ChatFragment :Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_SELECT_IMAGE && resultCode == Activity.RESULT_OK &&
-            data != null && data.data != null) {
+            data != null && data.data != null
+        ) {
             val selectedImagePath = data.data
 
             val selectedImageBmp =
@@ -114,7 +135,7 @@ class ChatFragment :Fragment() {
                 val messageToSend = ImageMessage(
                     imagePath, Calendar.getInstance().time,
                     FirebaseAuth.getInstance().currentUser!!.uid,
-                    otherUserID, currentUser.name,
+                    otherUserID, Username,
                     MessageType.IMAGE// 임시로 사용자 아이디 넣어줌
                 )
                 Firebase_Database.sendMessage(messageToSend, currentChannelId)
@@ -124,7 +145,7 @@ class ChatFragment :Fragment() {
 
     private fun updateRecyclerView(messages: List<Item>) { // 해당 함수에서 리싸이클러뷰의 레이아웃 매니저설정과 어댑터를 달아줌
 
-        fun init() { 
+        fun init() {
             chatrecycler.apply {
                 layoutManager = LinearLayoutManager(this@ChatFragment.context) // 리싸이클러뷰 레이아웃 매니저
                 adapter = GroupAdapter<GroupieViewHolder>().apply {
@@ -134,6 +155,7 @@ class ChatFragment :Fragment() {
             }
             shouldInitRecyclerView = false
         }
+
         fun updateItems() = messagesSection.update(messages)
         if (shouldInitRecyclerView)
             init()
