@@ -2,6 +2,7 @@ package com.example.non_tact_messenger_service.util
 
 import android.content.Context
 import android.util.Log
+import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.chat.*
 import com.example.non_tact_messenger_service.chat.Message
 import com.example.non_tact_messenger_service.chat.model.ImageMessage
@@ -156,6 +157,9 @@ object Firebase_Database {
         onListen: (List<Item>) -> Unit
         //onListen: (RecyclerView.ViewHolder) -> Unit
     ): ListenerRegistration {
+        Log.d("sad", "sadas")
+        var activity = MainActivity()
+        activity.Notification()
         return chatChannelsCollectionRef.document(channelId).collection("messages")
             .orderBy("time")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->

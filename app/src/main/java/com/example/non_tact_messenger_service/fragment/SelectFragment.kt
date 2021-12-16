@@ -1,13 +1,18 @@
 package com.example.non_tact_messenger_service.fragment
 
 import android.app.AlertDialog
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.RecyclerviewPatientHealthAdapter
@@ -70,6 +75,7 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
         getHealthInfo()
         return binding.root
     }
+
 
     private fun getHealthInfo() {
         scope.launch {
