@@ -64,6 +64,7 @@ class ChatFragment : Fragment() {
 
         //supportActionBar?.title = intent.getStringExtra(AppConstants.USER_NAME) firebaseauth 사용자가 아닌 다른 사용자 아이디를 이전에 받아와야함
         otherUserID = (activity as MainActivity).otherUID // 임시로 상대방 사용자 id를 넣어줌
+        Username = ""
 
         binding = DoctorProfileDialogBinding.inflate(layoutInflater, container, false)
         if (!(activity as MainActivity).userType) {
@@ -74,17 +75,6 @@ class ChatFragment : Fragment() {
                     binding.doctorName.text = us.base_user.name
                     binding.doctorBio.text = us.base_user.bio
                 }
-        }
-        if ((activity as MainActivity).userType) {
-            Firebase_Database.getDoctorUser {
-                DoctorUser = it
-                Username = it.base_user.name
-            }
-        } else {
-            Firebase_Database.getPatientUser {
-                PatientUser = it
-                Username = it.base_user.name
-            }
         }
 
 
@@ -158,6 +148,7 @@ class ChatFragment : Fragment() {
                 )
             }
         }
+
         return inflater.inflate(R.layout.fragment_chat, container, false)
     }
 
@@ -193,6 +184,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun updateRecyclerView(messages: List<Item>) { // 해당 함수에서 리싸이클러뷰의 레이아웃 매니저설정과 어댑터를 달아줌
+
         fun init() {
             chatrecycler.apply {
                 layoutManager = LinearLayoutManager(this@ChatFragment.context) // 리싸이클러뷰 레이아웃 매니저
