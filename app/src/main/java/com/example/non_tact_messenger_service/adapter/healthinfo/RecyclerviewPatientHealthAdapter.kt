@@ -1,4 +1,4 @@
-package com.example.non_tact_messenger_service.adapter
+package com.example.non_tact_messenger_service.adapter.healthinfo
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.non_tact_messenger_service.databinding.ItemHealthInfoBinding
 import com.example.non_tact_messenger_service.model.Item_HealthInfo
 
-class RecyclerviewPatientHealthAdapter(
+class RecyclerviewPatientHealthAdapter( // adpater for Healthinfo RecyclerView
     val values: ArrayList<Item_HealthInfo>
-) : RecyclerView.Adapter<RecyclerviewPatientHealthAdapter.ViewHolder>() {   //건강뉴스 recyclerview 어뎁터
+) : RecyclerView.Adapter<RecyclerviewPatientHealthAdapter.ViewHolder>() {   //health information recyclerview 어뎁터
     var itemOnClickListener: OnItemClickListener? = null
 
     interface OnItemClickListener {
@@ -28,21 +28,21 @@ class RecyclerviewPatientHealthAdapter(
     }
 
     @SuppressLint("RestrictedApi")
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) { // bindViewHolder with xml files
         val item = values[position]
         holder.health_title.text = item.health_title
         holder.health_detail.text = item.health_detail
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = values.size // get ItemCount
 
-    inner class ViewHolder(binding: ItemHealthInfoBinding):
+    inner class ViewHolder(binding: ItemHealthInfoBinding): //inner class for recyclerview adapter
         RecyclerView.ViewHolder(binding.root) {
-        val health_title: TextView = binding.healthsimple
-        val health_detail: TextView = binding.healthlong
+        val health_title: TextView = binding.healthsimple //binding TextView in item_health_info.xml
+        val health_detail: TextView = binding.healthlong // binding TextView in item_health_info.xml
 
         init {
-            binding.suggestion.setOnClickListener {
+            binding.suggestion.setOnClickListener { //click event for suggestion btton
                 itemOnClickListener?.OnItemClick(this, it, values[adapterPosition], adapterPosition)
             }
         }

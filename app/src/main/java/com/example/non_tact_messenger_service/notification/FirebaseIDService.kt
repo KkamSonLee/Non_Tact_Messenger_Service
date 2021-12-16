@@ -5,7 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 
-class FirebaseIDService : FirebaseMessagingService() {
+class FirebaseIDService : FirebaseMessagingService() { // notification service for FCM service
 
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)

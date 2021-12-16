@@ -1,8 +1,8 @@
-package com.example.non_tact_messenger_service.model
+package com.example.non_tact_messenger_service.model.Message
 
 import java.util.*
 
-data class TextMessage(
+data class TextMessage( // Data class for Text Message
     val text: String,
     override val time: Date,
     override val senderId: String,
@@ -10,6 +10,6 @@ data class TextMessage(
     override val senderName: String,
     override val type: String = MessageType.TEXT
 )
-    : Message {
+    : Message { // implements for Message interface
     constructor() : this("", Date(0), "", "","", "")
     }

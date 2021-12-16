@@ -2,9 +2,16 @@ package com.example.non_tact_messenger_service.model
 
 import android.content.Context
 import android.util.Log
-import com.example.non_tact_messenger_service.adapter.ImageMessageItem
-import com.example.non_tact_messenger_service.adapter.TextMessageItem
+import com.example.non_tact_messenger_service.adapter.chat.ImageMessageItem
+import com.example.non_tact_messenger_service.adapter.chat.TextMessageItem
 import com.example.non_tact_messenger_service.model.*
+import com.example.non_tact_messenger_service.model.Message.ImageMessage
+import com.example.non_tact_messenger_service.model.Message.Message
+import com.example.non_tact_messenger_service.model.Message.MessageType
+import com.example.non_tact_messenger_service.model.Message.TextMessage
+import com.example.non_tact_messenger_service.model.Users.Doctor
+import com.example.non_tact_messenger_service.model.Users.Patient
+import com.example.non_tact_messenger_service.model.Users.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,10 +31,8 @@ object Firebase_Database {
         )
 
     private val chatChannelsCollectionRef = firestoreInstance.collection("chat_room")
-//    private val currentUserDocRef: DocumentReference
-//        get() = firestoreInstance.document("/Users/eurPdsswDs3rMG35hqM7") //테스트용
 
-    fun initPatientUser(onComplete: () -> Unit) {
+    fun initPatientUser(onComplete: () -> Unit) { //add Users
         currentUserDocRef.get().addOnSuccessListener { documentSnapshot ->
             if (!documentSnapshot.exists()) {
                 val newUser = User(
@@ -45,7 +50,7 @@ object Firebase_Database {
         }
     }
 
-    fun initDoctorUser(onComplete: () -> Unit) {
+    fun initDoctorUser(onComplete: () -> Unit) { // add Doctor
         currentUserDocRef.get().addOnSuccessListener { documentSnapshot ->
             if (!documentSnapshot.exists()) {
                 val newUser = User(
@@ -60,7 +65,7 @@ object Firebase_Database {
                 onComplete()
         }
     }
-    fun updateCurrentUser(name: String = "", bio: String = "") {
+    fun updateCurrentUser(name: String = "", bio: String = "") { // update Users information
         val userFieldMap = mutableMapOf<String, Any>()
         val quserFieldMap = mutableMapOf<String, Any>()
         if (name.isNotBlank()) userFieldMap["name"] = name
@@ -70,7 +75,7 @@ object Firebase_Database {
         FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).update(quserFieldMap)
     }
 
-    fun setPatientUser(health_title: String, health_detail: String) {
+    fun setPatientUser(health_title: String, health_detail: String) { // set Patient User
         val userFieldMap = mutableMapOf<String, Any>()
         if (health_title.isNotBlank() && health_detail.isNotBlank())
             userFieldMap["health_title"] = health_title
@@ -78,7 +83,7 @@ object Firebase_Database {
         currentUserDocRef.update(userFieldMap)
     }
 
-    fun getDoctorUser(onComplete: (Doctor) -> Unit) {
+    fun getDoctorUser(onComplete: (Doctor) -> Unit) { //get Doctor information for Doctor data class
         currentUserDocRef.get()
             .addOnSuccessListener {
                 onComplete(it.toObject(Doctor::class.java)!!)
@@ -92,27 +97,8 @@ object Firebase_Database {
             }
     }
 
-//    fun addUsersListener(context: Context, onListen: (List<Item>) -> Unit): ListenerRegistration {
-//        return firestoreInstance.collection("users")
-//            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-//                if (firebaseFirestoreException != null) {
-//                    Log.e("FIRESTORE", "Users listener error.", firebaseFirestoreException)
-//                    return@addSnapshotListener
-//                }
-//
-//                val items = mutableListOf<Item>()
-//                querySnapshot!!.documents.forEach {
-//                    if (it.id != FirebaseAuth.getInstance().currentUser?.uid)
-//                        items.add(PersonItem(it.toObject(User::class.java)!!, it.id, context))
-//                }
-//                onListen(items)
-//            }
-//    }
 
-    fun removeListener(registration: ListenerRegistration) = registration.remove()
-
-
-    fun getOrCreateChatChannel( //채팅방 생성
+    fun getOrCreateChatChannel( //create new Chat_room or get Chat_room
         otherUserId: String,
         onComplete: (channelId: String) -> Unit
     ) {
@@ -146,12 +132,11 @@ object Firebase_Database {
     fun addChatMessagesListener( // 채팅방의 메세지 변화를 감지할 Observer
         channelId: String, context: Context?,
         onListen: (List<Item>) -> Unit
-        //onListen: (RecyclerView.ViewHolder) -> Unit
     ): ListenerRegistration {
         return chatChannelsCollectionRef.document(channelId).collection("messages")
-            .orderBy("time")
+            .orderBy("time") // 시간순 정렬
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                if (firebaseFirestoreException != null) {
+                if (firebaseFirestoreException != null) { //에러 예외처리
                     Log.e("FIRESTORE", "ChatMessagesListener error.", firebaseFirestoreException)
                     return@addSnapshotListener
                 }
@@ -159,13 +144,13 @@ object Firebase_Database {
                 querySnapshot!!.documents.forEach {
                     if (it["type"] == MessageType.TEXT) // 메세지 타입이 텍스트
                         items.add(
-                            TextMessageItem(
+                            TextMessageItem( // Observer패턴에 의해 감지된 텍스트 메세지를 리스트에 추가
                                 it.toObject(TextMessage::class.java)!!,
                                 context!!
                             )
                         )
                     else
-                        items.add(
+                        items.add( // Observer패턴에 의해 감지된 이미지 메세지를 리스트에 추가
                             ImageMessageItem(it.toObject(ImageMessage::class.java)!!, context!!)
                         )
                     return@forEach
@@ -174,20 +159,20 @@ object Firebase_Database {
             }
     }
 
-    fun sendMessage(message: Message, channelId: String) {
+    fun sendMessage(message: Message, channelId: String) { // SendMessage to firestore
         chatChannelsCollectionRef.document(channelId)
             .collection("messages")
             .add(message)
     }
 
-    fun getFCMRegistrationTokens(onComplete: (tokens: MutableList<String>) -> Unit) {
+    fun getFCMRegistrationTokens(onComplete: (tokens: MutableList<String>) -> Unit) { // get FCM tokens for notifications
         currentUserDocRef.get().addOnSuccessListener {
             val user = it["registrationTokens"]
             onComplete(user as MutableList<String>)
         }
     }
 
-    fun setFCMRegistrationTokens(registrationTokens: MutableList<String>) {
+    fun setFCMRegistrationTokens(registrationTokens: MutableList<String>) { // set FCM tokesn for notifications
         currentUserDocRef.update(mapOf("registrationTokens" to registrationTokens))
     }
 }

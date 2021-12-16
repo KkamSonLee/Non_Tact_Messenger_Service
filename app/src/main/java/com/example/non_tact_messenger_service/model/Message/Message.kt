@@ -1,4 +1,4 @@
-package com.example.non_tact_messenger_service.model
+package com.example.non_tact_messenger_service.model.Message
 
 import java.util.*
 
@@ -7,7 +7,7 @@ object MessageType {
     const val IMAGE = "IMAGE"
 }
 
-interface Message { //메세지의 인터페이스
+interface Message { //interface for messages
     val time: Date
     val senderId: String
     val recipientId : String

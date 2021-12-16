@@ -10,11 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.non_tact_messenger_service.ViewController.MainActivity
-import com.example.non_tact_messenger_service.adapter.RecyclerviewPatientHealthAdapter
+import com.example.non_tact_messenger_service.adapter.healthinfo.RecyclerviewPatientHealthAdapter
 import com.example.non_tact_messenger_service.databinding.ContactMessageDialogBinding
 import com.example.non_tact_messenger_service.databinding.FragmentSelectBinding
 import com.example.non_tact_messenger_service.model.Item_HealthInfo
-import com.example.non_tact_messenger_service.model.Patient
+import com.example.non_tact_messenger_service.model.Users.Patient
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
