@@ -5,15 +5,6 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <CheckBox
-        android:id="@+id/is_doctor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:checked="false"
-        android:fontFamily="@font/gsans_medium"
-        android:text="의료인인 경우 체크 " />
-
     <Button
         android:id="@+id/join_btn"
         android:layout_width="wrap_content"

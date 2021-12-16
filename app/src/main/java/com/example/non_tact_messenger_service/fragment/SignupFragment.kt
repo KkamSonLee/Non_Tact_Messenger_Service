@@ -50,8 +50,8 @@ class SignupFragment : Fragment() {
         super.onAttach(context)
         mainActivity = activity as MainActivity
         if(mainActivity?.intent_data==false){
-            Log.d("user", "null")
-        }else{
+            Log.d("user", "null")   //환자
+        }else{   //의료인
             receive_data = mainActivity?.intent_data!!
         }
     }
@@ -84,14 +84,19 @@ class SignupFragment : Fragment() {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 val auth = FirebaseAuth.getInstance().currentUser
-                if(receive_data){
-
+                if(receive_data){  //의사일때
                     Firebase_Database.initDoctorUser {
-
                         val registrationToken = FirebaseMessaging.getInstance().token
                         FirebaseIDService.addTokenToFirestore(registrationToken.toString())
                         mainActivity?.fragmentChange(5)
                     }
+                }else{
+                    Firebase_Database.initPatientUser {
+                        val registrationToken = FirebaseMessaging.getInstance().token
+                        FirebaseIDService.addTokenToFirestore(registrationToken.toString())
+                        mainActivity?.fragmentChange(6)
+                    }
+
                 }
             }
 

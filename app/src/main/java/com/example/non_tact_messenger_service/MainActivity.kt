@@ -30,13 +30,20 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
         Firebase_Database.getHealthInfo()
         if(intent.hasExtra("user")){
-            fragmentChange(2)
-            intent_data= intent.getBooleanExtra("user", false)
-        }else{    //의사인거 파이어스토어에서 확인해야함
+            if(intent.getBooleanExtra("user", false)){
+                fragmentChange(2)
+                intent_data= intent.getBooleanExtra("user", false)
+            }else{
+                fragmentChange(2)
+                intent_data= intent.getBooleanExtra("user", false)
+            }
+        }/*else if(){    //의사인거 파이어스토어에서 확인해야함
             Firebase_Database.getCurrentUser {
-
             }
             fragmentChange(3)
+        }*/else{
+            Log.d("user Id",auth.currentUser!!.uid)
+            fragmentChange(6)
         }
         setContentView(binding.root)
     }

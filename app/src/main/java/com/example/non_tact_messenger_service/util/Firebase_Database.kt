@@ -20,7 +20,6 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 object Firebase_Database {
 
     private val firestoreInstance: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
-
     private val currentUserDocRef: DocumentReference // 파이어베이스 어센틱케이션을 통해서 해당 파이어스토어의 document를 찾아간다.
         get() = firestoreInstance.document(
             "Users/${

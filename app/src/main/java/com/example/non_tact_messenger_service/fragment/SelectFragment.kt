@@ -30,10 +30,10 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
     ): View? {
         binding = FragmentSelectBinding.inflate(layoutInflater, container, false)
 
-        data.add(HealthInfo("sadas", "sadsadsa"))
-        data.add(HealthInfo("ㅁㄴㅇㅁㄴ", "sadasdasd"))
-        data.add(HealthInfo("ㄴㅁ", "가나다라"))
-        data.add(HealthInfo("ㅁㄴㅇㄴㅁㅇ", "마바사"))
+        data.add(HealthInfo("sadas", "sadsadsa", ""))
+        data.add(HealthInfo("ㅁㄴㅇㅁㄴ", "sadasdasd", ""))
+        data.add(HealthInfo("ㄴㅁ", "가나다라", ""))
+        data.add(HealthInfo("ㅁㄴㅇㄴㅁㅇ", "마바사", ""))
 
         adapter = RecyclerviewPatientHealthAdapter(data)
         adapter.itemOnClickListener = object : RecyclerviewPatientHealthAdapter.OnItemClickListener{
