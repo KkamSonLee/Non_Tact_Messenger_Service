@@ -2,6 +2,7 @@ package com.example.non_tact_messenger_service.util
 
 import android.content.Context
 import android.util.Log
+import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.chat.*
 import com.example.non_tact_messenger_service.chat.Message
 import com.example.non_tact_messenger_service.chat.model.ImageMessage
@@ -10,17 +11,21 @@ import com.example.non_tact_messenger_service.chat.model.User
 import com.example.non_tact_messenger_service.chat.recycler.ImageMessageItem
 import com.example.non_tact_messenger_service.chat.recycler.TextMessageItem
 import com.example.non_tact_messenger_service.model.Doctor
+import com.example.non_tact_messenger_service.model.HealthInfo
+import com.example.non_tact_messenger_service.model.Item_HealthInfo
 import com.example.non_tact_messenger_service.model.Patient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.xwray.groupie.kotlinandroidextensions.Item
 
 object Firebase_Database {
+    var is_enabled = false
+    val firestoreInstance: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
+    val currentUserDocRef: DocumentReference // 파이어베이스 어센틱케이션을 통해서 해당 파이어스토어의 document를 찾아간다.
 
-    private val firestoreInstance: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
-    private val currentUserDocRef: DocumentReference // 파이어베이스 어센틱케이션을 통해서 해당 파이어스토어의 document를 찾아간다.
         get() = firestoreInstance.document(
             "Users/${
                 FirebaseAuth.getInstance().currentUser?.uid
@@ -31,7 +36,7 @@ object Firebase_Database {
     private val chatChannelsCollectionRef = firestoreInstance.collection("chat_room")
 //    private val currentUserDocRef: DocumentReference
 //        get() = firestoreInstance.document("/Users/eurPdsswDs3rMG35hqM7") //테스트용
-    
+
     fun initPatientUser(onComplete: () -> Unit) {
         currentUserDocRef.get().addOnSuccessListener { documentSnapshot ->
             if (!documentSnapshot.exists()) {
@@ -40,7 +45,7 @@ object Firebase_Database {
                     "", false
                 )
                 val newPatient = Patient(
-                    newUser, mutableListOf(), mutableListOf()
+                    newUser, mutableListOf(), "", ""
                 )
                 currentUserDocRef.set(newPatient).addOnSuccessListener {
                     onComplete()
@@ -57,7 +62,7 @@ object Firebase_Database {
                     FirebaseAuth.getInstance().currentUser?.displayName ?: "",
                     "", true
                 )
-                val newDoctor = Doctor(newUser, mutableListOf(),"")
+                val newDoctor = Doctor(newUser, mutableListOf(), "")
                 currentUserDocRef.set(newDoctor).addOnSuccessListener {
                     onComplete()
                 }
@@ -65,38 +70,37 @@ object Firebase_Database {
                 onComplete()
         }
     }
-    fun getHealthInfo() {
-        firestoreInstance.collection("Users").get().addOnSuccessListener {
-
-            for (document in it) {
-                firestoreInstance.collection("Users").document(document.id)
-                    .collection("chating_room").document().get().addOnSuccessListener {
-                }
-            }
-        }
-    }
-
     fun updateCurrentUser(name: String = "", bio: String = "") {
         val userFieldMap = mutableMapOf<String, Any>()
+        val quserFieldMap = mutableMapOf<String, Any>()
         if (name.isNotBlank()) userFieldMap["name"] = name
         if (bio.isNotBlank()) userFieldMap["bio"] = bio
-        currentUserDocRef.update(userFieldMap)
+        userFieldMap["userType"] = true
+        quserFieldMap["base_user"] = userFieldMap
+        FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).update(quserFieldMap)
     }
 
     fun setPatientUser(health_title: String, health_detail: String) {
         val userFieldMap = mutableMapOf<String, Any>()
-        if (health_title.isNotBlank()) userFieldMap["health_title"] = health_title
-        if (health_detail.isNotBlank()) userFieldMap["health_detail"] = health_detail
-        currentUserDocRef.collection("healthinfo").document().set(userFieldMap)
+        if (health_title.isNotBlank() && health_detail.isNotBlank())
+            userFieldMap["health_title"] = health_title
+            userFieldMap["health_detail"] = health_detail
+        currentUserDocRef.update(userFieldMap)
     }
 
-    fun getCurrentUser(onComplete: (User) -> Unit) {
+    fun getDoctorUser(onComplete: (Doctor) -> Unit) {
         currentUserDocRef.get()
             .addOnSuccessListener {
-                onComplete(it.toObject(User::class.java)!!)
+                onComplete(it.toObject(Doctor::class.java)!!)
             }
     }
 
+    fun getPatientUser(onComplete: (Patient) -> Unit) {
+        currentUserDocRef.get()
+            .addOnSuccessListener {
+                onComplete(it.toObject(Patient::class.java)!!)
+            }
+    }
 
 //    fun addUsersListener(context: Context, onListen: (List<Item>) -> Unit): ListenerRegistration {
 //        return firestoreInstance.collection("users")
@@ -131,7 +135,6 @@ object Firebase_Database {
 
                 val currentUserId =
                     FirebaseAuth.getInstance().currentUser!!.uid // 현재 어플 사용자의 auth및 uid를 얻음
-                //val currentUserId = ("eurPdsswDs3rMG35hqM7") // 테스트용
                 val newChannel =
                     chatChannelsCollectionRef.document() //firestore 에 새로운 document(채팅방)추가
                 newChannel.set(ChatChannel(mutableListOf(currentUserId, otherUserId)))
@@ -162,7 +165,6 @@ object Firebase_Database {
                     Log.e("FIRESTORE", "ChatMessagesListener error.", firebaseFirestoreException)
                     return@addSnapshotListener
                 }
-
                 val items = mutableListOf<Item>()
                 querySnapshot!!.documents.forEach {
                     if (it["type"] == MessageType.TEXT) // 메세지 타입이 텍스트

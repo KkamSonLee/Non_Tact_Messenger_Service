@@ -26,6 +26,5 @@ class WebAppInterface{
             Log.d("number", number)
             WebCommunication.setLicenseNumber(number)
         }
-
     }
 }

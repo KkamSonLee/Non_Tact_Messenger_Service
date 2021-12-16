@@ -85,16 +85,22 @@ class SignupFragment : Fragment() {
             if (resultCode == Activity.RESULT_OK) {
                 val auth = FirebaseAuth.getInstance().currentUser
                 if(receive_data){  //의사일때
-                    Firebase_Database.initDoctorUser {
-                        val registrationToken = FirebaseMessaging.getInstance().token
-                        FirebaseIDService.addTokenToFirestore(registrationToken.toString())
-                        mainActivity?.fragmentChange(5)
+                    Firebase_Database.currentUserDocRef.get().addOnSuccessListener {
+                        if(!(it["license"].toString().isNullOrBlank())){
+                            Firebase_Database.initDoctorUser {
+                                val registrationToken = FirebaseMessaging.getInstance().token
+                                FirebaseIDService.addTokenToFirestore(registrationToken.toString())
+                                mainActivity?.fragmentChange(5)
+                            }
+                        }else{
+                            mainActivity?.fragmentChange(3)
+                        }
                     }
                 }else{
                     Firebase_Database.initPatientUser {
                         val registrationToken = FirebaseMessaging.getInstance().token
                         FirebaseIDService.addTokenToFirestore(registrationToken.toString())
-                        mainActivity?.fragmentChange(6)
+                        mainActivity?.fragmentChange(7)
                     }
 
                 }
@@ -111,6 +117,4 @@ class SignupFragment : Fragment() {
             }
         }
     }
-
-
 }
