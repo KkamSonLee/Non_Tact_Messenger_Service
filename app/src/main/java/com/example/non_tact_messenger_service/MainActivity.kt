@@ -7,12 +7,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import android.R
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.non_tact_messenger_service.chat.ChatFragment
 import com.example.non_tact_messenger_service.chat.model.User
 import com.example.non_tact_messenger_service.fragment.*
 import com.example.non_tact_messenger_service.util.Firebase_Database
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.getField
+import org.json.JSONArray
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,13 +42,14 @@ class MainActivity : AppCompatActivity() {
             }
         }else{
             FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).get().addOnSuccessListener {
-                var user = it.toObject(User::class.java)!!
-                userType = user.userType
-            }
-            if(userType){
-                fragmentChange(3)
-            }else{
-                fragmentChange(7)
+                var user = it.get("base_user")
+                val objec = user as MutableMap<String, Any>
+                userType = objec["userType"] as Boolean
+                if(userType){
+                    fragmentChange(3)
+                }else{
+                    fragmentChange(7)
+                }
             }
         }
         setContentView(binding.root)

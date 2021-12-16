@@ -8,16 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.non_tact_messenger_service.MainActivity
-import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.RecyclerviewPatientHealthAdapter
 import com.example.non_tact_messenger_service.databinding.ContactMessageDialogBinding
 import com.example.non_tact_messenger_service.databinding.FragmentSelectBinding
 import com.example.non_tact_messenger_service.model.HealthInfo
 import com.example.non_tact_messenger_service.model.Item_HealthInfo
 import com.example.non_tact_messenger_service.util.Firebase_Database
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SelectFragment : Fragment() {  //환자 리스트 선택
 
@@ -25,15 +25,16 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
     lateinit var binding: FragmentSelectBinding
     lateinit var adapter: RecyclerviewPatientHealthAdapter
     lateinit var binding_dialog: ContactMessageDialogBinding
-    var data = ArrayList<Item_HealthInfo>()
+    lateinit var user_info:MutableList<Item_HealthInfo>
+    var data = mutableListOf<Item_HealthInfo>()
+    val scope = CoroutineScope(Dispatchers.IO)//
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSelectBinding.inflate(layoutInflater, container, false)
-        data.addAll(Firebase_Database.getHealthInfo())
-
-        adapter = RecyclerviewPatientHealthAdapter(data)
+        user_info = mutableListOf(Item_HealthInfo())
+        adapter = RecyclerviewPatientHealthAdapter(user_info)
         adapter.itemOnClickListener = object : RecyclerviewPatientHealthAdapter.OnItemClickListener{
             override fun OnItemClick(
                 holder: RecyclerView.ViewHolder,
@@ -54,10 +55,15 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
                 dlg.setNegativeButton("취소", null)
                 dlg.show()
             }
-
         }
         binding.patientListview.adapter = adapter
-
         return binding.root
+    }
+    fun getHealthInfo(){
+        scope.launch {
+            user_info = Firebase_Database.getHealthInfo()
+            adapter = RecyclerviewPatientHealthAdapter(user_info)
+            adapter.notifyDataSetChanged()
+        }
     }
 }

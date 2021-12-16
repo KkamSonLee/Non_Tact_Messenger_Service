@@ -76,6 +76,8 @@ object Firebase_Database {
                     .addOnSuccessListener {
                         var user = (it.toObject(Patient::class.java))
                         if (!(user!!.base_user.userType)) {
+                            Log.d("data1", user.health_detail)
+                            Log.d("data2", user.health_title)
                             User_info.add(
                                 Item_HealthInfo(
                                     user.health_title,
