@@ -23,14 +23,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    lateinit var suggestionMessage: String
+    var userType: Boolean = false       //user Type
     var intent_data: Boolean = false
     var healthTitle: String = ""
-    var userType: Boolean = false
     private lateinit var auth: FirebaseAuth
-    var otherUID: String = ""
-    lateinit var suggestionMessage: String
-
-    var fragment_Container =
+    var otherUID: String = ""           //the other uid
+    var fragment_Container =    //iterator pattern(Fragment Handling)
         listOf<Fragment>(
             ProfileFragment(),
             SignupFragment(),
@@ -47,37 +46,34 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
 
 
-        if (intent.hasExtra("user")) {
+        if (intent.hasExtra("user")) {  //User type decide when change from Choice Activity
             if (intent.getBooleanExtra("user", false)) {
                 fragmentChange(2)
-                intent_data = intent.getBooleanExtra("user", false)
                 userType = true
             } else {
                 fragmentChange(2)
-                intent_data = intent.getBooleanExtra("user", false)
                 userType = false
             }
         } else {
             FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser!!.uid).get()
-                .addOnSuccessListener {
+                .addOnSuccessListener {    //get current user object
                     var user = it.get("base_user")
                     val objec = user as MutableMap<String, Any>
-                    userType = objec["userType"] as Boolean
-                    if (userType) {
-                        fragmentChange(3)
-                    } else {
+                    userType = objec["userType"] as Boolean   //userType Save
+                    if (userType) {  //when doctor
+                        fragmentChange(3)  // to Change Select Fragment
+                    } else {  //when patient
                         FirebaseFirestore.getInstance().collection("Users")
                             .document(FirebaseAuth.getInstance().currentUser!!.uid)
-                            .collection("chating_room").get().addOnSuccessListener {
-                                it.forEach {
+                            .collection("chating_room").get().addOnSuccessListener {  //ref chating_room
+                                it.forEach {  //get doctor UID
                                     otherUID = it.id
-                                    Log.d("asdf", it.id)
                                 }
-                                if (intent.hasExtra("noti")) {
-                                    fragmentChange(4)
+                                if (intent.hasExtra("noti")) {    //has notification click
+                                    fragmentChange(4)     //change to ChatFrament
                                 } else {
-                                    fragmentChange(7)
+                                    fragmentChange(7)     //chage to searchFragment
                                 }
                             }
 
@@ -88,11 +84,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    // 환자 - 구분(Choice Ac) - > 회원가입(Sign Fra) - > 증상입력(SearchFra) -> 건강정보 기입(HealthInfo Fra) -> 연결 대기(Buffering Fra) -> 채팅방(Chat Fra)
-    // 환자(로그인 이후) - 증상입력(Search Fra) -> 건강정보 기입 -> 연결 대기 -> 채팅방
-    // 의료인 - 구분 -> 회원가입 -> 의료인 인증(DoctorCerti Fra) -> 내 프로필 기입(Profile Fra) -> 환자 건강정보 리스트(Select Fra) -> 연결 대기(Buffering Fra) -> 채팅방(Chat Fra)
-    // 의료인(로그인 이후) - 환자 건강정보 리스트 -> 연결 대기 -> 채팅방
-    fun Notification() {//--------------------------------------물 섭취 알림부분
+
+    fun fragmentChange(index: Int) {
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentContainer.id, fragment_Container[index - 1]).commit()
+    }
+
+    fun Notification() {   //Notification Materialization
         val id = "notichannel"
         val name = "메세지"
         val notificationChannel = NotificationChannel(
@@ -132,10 +130,4 @@ class MainActivity : AppCompatActivity() {
 
         manager.notify(2, notification)
     }
-
-    fun fragmentChange(index: Int) {
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainer.id, fragment_Container[index - 1]).commit()
-    }
-
 }

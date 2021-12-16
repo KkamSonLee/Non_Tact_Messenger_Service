@@ -14,11 +14,10 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
         binding.search.setOnClickListener {
-            (activity as MainActivity).healthTitle = binding.healthTitle.text.toString()
-            (activity as (MainActivity)).fragmentChange(6)
+            (activity as MainActivity).healthTitle = binding.healthTitle.text.toString()    //input health_title
+            (activity as (MainActivity)).fragmentChange(6)  //change to HealthInfoFragment
         }
         return binding.root
     }

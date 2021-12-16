@@ -39,14 +39,11 @@ class SignupFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = activity as MainActivity
-        if(mainActivity?.intent_data==false){
-            Log.d("user", "null")   //환자
-        }else{   //의료인
-            receive_data = mainActivity?.intent_data!!
+        if(mainActivity?.intent_data==true){          //has intent data
+            receive_data = mainActivity?.intent_data!!  //userType save
         }
     }
 
-    // 메인 액티비티에서 내려온다.
     override fun onDetach() {
         super.onDetach()
         mainActivity = null
@@ -57,7 +54,7 @@ class SignupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignupBinding.inflate(layoutInflater, container, false)
-        binding.joinBtn.setOnClickListener {
+        binding.joinBtn.setOnClickListener {   //Firebase Auth UI launch
             val intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(signInProviders)
                 .setIsSmartLockEnabled(false)
@@ -69,34 +66,34 @@ class SignupFragment : Fragment() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)   //Sign in finished
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {   //sign up complete
                 val auth = FirebaseAuth.getInstance().currentUser
-                if(receive_data){  //의사일때
+                if(receive_data){  //when doctor
                     Firebase_Database.currentUserDocRef.get().addOnSuccessListener {
-                        if(!(it["license"].toString().isNullOrBlank())){
-                            Firebase_Database.initDoctorUser {
+                        if(!(it["license"].toString().isNullOrBlank())){   // not yet certified
+                            Firebase_Database.initDoctorUser {   //add notify Token
                                 val registrationToken = FirebaseMessaging.getInstance().token
                                 FirebaseIDService.addTokenToFirestore(registrationToken.toString())
-                                mainActivity?.fragmentChange(5)
+                                mainActivity?.fragmentChange(5)   //to change DoctorCertifiedFragment
                             }
                         }else{
-                            mainActivity?.fragmentChange(3)
+                            mainActivity?.fragmentChange(3) //to change SelectFragment
                         }
                     }
-                }else{
-                    Firebase_Database.initPatientUser {
+                }else{      // when patient
+                    Firebase_Database.initPatientUser {   //add notify Token
                         val registrationToken = FirebaseMessaging.getInstance().token
                         FirebaseIDService.addTokenToFirestore(registrationToken.toString())
-                        mainActivity?.fragmentChange(7)
+                        mainActivity?.fragmentChange(7)   //to change SearchFragment
                     }
 
                 }
             }
 
-        } else if (resultCode == Activity.RESULT_CANCELED) {
+        } else if (resultCode == Activity.RESULT_CANCELED) {    //Sign up canceled
             val response = IdpResponse.fromResultIntent(data)
             if (response == null) return
             when (response.error?.errorCode) {

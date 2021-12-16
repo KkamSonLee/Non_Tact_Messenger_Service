@@ -13,10 +13,10 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         Handler().postDelayed({
-            if (FirebaseAuth.getInstance().currentUser == null)
-                start<ChoiceActivity>()
+            if (FirebaseAuth.getInstance().currentUser == null)    //my Auth not exist
+                start<ChoiceActivity>()   //sign up
             else
-                start<MainActivity>()
+                start<MainActivity>()     //change to MainActivity
             finish()
         }, 2000L)
     }

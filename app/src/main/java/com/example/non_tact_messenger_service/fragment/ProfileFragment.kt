@@ -20,15 +20,9 @@ class ProfileFragment : Fragment() {
     // 메인 액티비티 위에 올린다.
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mainActivity = activity as MainActivity
+        mainActivity = activity as MainActivity   //get parent Activity
     }
 
-    // 메인 액티비티에서 내려온다.
-    override fun onDetach() {
-        super.onDetach()
-        mainActivity = null
-        binding.editTextName.setText("")
-    }
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
@@ -36,12 +30,12 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
-        binding.btnSave.setOnClickListener {
+        binding.btnSave.setOnClickListener {   //update doctor profile
             Firebase_Database.updateCurrentUser(
                 binding.editTextName.text.toString(),
                 binding.editTextDepartment.text.toString()
             )
-            (activity as MainActivity).fragmentChange(3)
+            (activity as MainActivity).fragmentChange(3)   //change to SelectFragment
         }
         return binding.root
     }

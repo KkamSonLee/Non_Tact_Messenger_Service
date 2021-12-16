@@ -20,16 +20,16 @@ class HealthInfoFragment : Fragment() {
 
         binding.sendHealth.setOnClickListener {
             Firebase_Database.setPatientUser((activity as MainActivity).healthTitle,
-                binding.healthDetail.text.toString())
-            if((activity as MainActivity).otherUID.isNullOrBlank()){
+                binding.healthDetail.text.toString())  // Patient HealthInfo initializing
+            if((activity as MainActivity).otherUID.isNullOrBlank()){    // get suggestion from doctor id
                 Firebase_Database.currentUserDocRef.collection("chating_room").get().addOnSuccessListener {
                     it.forEach {
                         (activity as MainActivity).otherUID = it.id
                     }
                 }
-                Toast.makeText(context, "등록이 완료되었습니다. 의사가 제안 할 때 까지 조금만 대기해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "등록이 완료되었습니다. 의사가 제안 할 때 까지 조금만 대기해주세요.", Toast.LENGTH_SHORT).show() //toast
             }else{
-            (activity as MainActivity).fragmentChange(4)
+            (activity as MainActivity).fragmentChange(4)   //change to ChatFragment
             }
         }
         return binding.root

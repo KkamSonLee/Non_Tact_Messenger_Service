@@ -12,15 +12,15 @@ class ChoiceActivity : AppCompatActivity() {
         binding = ActivityChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val intent = Intent(this, MainActivity::class.java)
-        binding.doctorBtn.setOnClickListener {
+        binding.doctorBtn.setOnClickListener {   //when doctor
             intent.putExtra("user", true)
-            startActivity(intent)
-            finish()
+            startActivity(intent)    //to Change MainActivity with Extra user type
+            finish()                //memory free
         }
-        binding.patientBtn.setOnClickListener {
+        binding.patientBtn.setOnClickListener {   //when patient
             intent.putExtra("user", false)
-            startActivity(intent)
-            finish()
+            startActivity(intent)   //to Change MainActivity with Extra user type
+            finish()                //memory free
         }
     }
 }
