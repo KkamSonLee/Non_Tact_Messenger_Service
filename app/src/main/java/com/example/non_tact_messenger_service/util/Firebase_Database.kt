@@ -68,12 +68,14 @@ object Firebase_Database {
                 onComplete()
         }
     }
-
     fun updateCurrentUser(name: String = "", bio: String = "") {
         val userFieldMap = mutableMapOf<String, Any>()
+        val quserFieldMap = mutableMapOf<String, Any>()
         if (name.isNotBlank()) userFieldMap["name"] = name
         if (bio.isNotBlank()) userFieldMap["bio"] = bio
-        currentUserDocRef.update(userFieldMap)
+        userFieldMap["userType"] = true
+        quserFieldMap["base_user"] = userFieldMap
+        FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).update(quserFieldMap)
     }
 
     fun setPatientUser(health_title: String, health_detail: String) {

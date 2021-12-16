@@ -20,35 +20,45 @@ import org.json.JSONArray
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    var intent_data:Boolean = false
-    var healthTitle:String = ""
-    var userType:Boolean = false
+    var intent_data: Boolean = false
+    var healthTitle: String = ""
+    var userType: Boolean = false
     private lateinit var auth: FirebaseAuth
     lateinit var otherUID: String
     var fragment_Container =
-        listOf<Fragment>(ProfileFragment(), SignupFragment(), SelectFragment(),ChatFragment(), DoctorCertifiedFragment(), HealthInfoFragment(), SearchFragment())
+        listOf<Fragment>(
+            ProfileFragment(),
+            SignupFragment(),
+            SelectFragment(),
+            ChatFragment(),
+            DoctorCertifiedFragment(),
+            HealthInfoFragment(),
+            SearchFragment()
+        )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         auth = Firebase.auth
-        if(intent.hasExtra("user")){
-            if(intent.getBooleanExtra("user", false)){
+        if (intent.hasExtra("user")) {
+            if (intent.getBooleanExtra("user", false)) {
                 fragmentChange(2)
-                intent_data= intent.getBooleanExtra("user", false)
+                intent_data = intent.getBooleanExtra("user", false)
                 userType = true
-            }else{
+            } else {
                 fragmentChange(2)
-                intent_data= intent.getBooleanExtra("user", false)
+                intent_data = intent.getBooleanExtra("user", false)
                 userType = false
             }
-        }else{
-            FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).get().addOnSuccessListener {
+        } else {
+            FirebaseFirestore.getInstance().collection("Users")
+                .document(FirebaseAuth.getInstance().currentUser!!.uid).get().addOnSuccessListener {
                 var user = it.get("base_user")
                 val objec = user as MutableMap<String, Any>
                 userType = objec["userType"] as Boolean
-                if(userType){
+                if (userType) {
                     fragmentChange(3)
-                }else{
+                } else {
                     fragmentChange(7)
                 }
             }

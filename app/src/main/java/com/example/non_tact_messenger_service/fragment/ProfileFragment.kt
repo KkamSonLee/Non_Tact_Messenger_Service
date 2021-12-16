@@ -50,6 +50,7 @@ class ProfileFragment : Fragment() {
                 binding.editTextName.text.toString(),
                 binding.editTextDepartment.text.toString()
             )
+            (activity as MainActivity).fragmentChange(3)
         }
         return binding.root
     }

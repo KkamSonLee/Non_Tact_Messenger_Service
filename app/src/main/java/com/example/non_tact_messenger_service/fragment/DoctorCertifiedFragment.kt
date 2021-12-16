@@ -49,7 +49,7 @@ class DoctorCertifiedFragment : Fragment() {
                     var map = mutableMapOf<String, Any>()
                     map["license"] = WebCommunication.getLicenseNumber()
                     FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().currentUser!!.uid).update(map)
-                    (activity as MainActivity).fragmentChange(3)
+                    (activity as MainActivity).fragmentChange(1)
                 }
             }
         }
