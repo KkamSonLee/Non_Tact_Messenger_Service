@@ -133,7 +133,6 @@ object Firebase_Database {
 
                 val currentUserId =
                     FirebaseAuth.getInstance().currentUser!!.uid // 현재 어플 사용자의 auth및 uid를 얻음
-                //val currentUserId = ("eurPdsswDs3rMG35hqM7") // 테스트용
                 val newChannel =
                     chatChannelsCollectionRef.document() //firestore 에 새로운 document(채팅방)추가
                 newChannel.set(ChatChannel(mutableListOf(currentUserId, otherUserId)))
@@ -167,7 +166,6 @@ object Firebase_Database {
                     Log.e("FIRESTORE", "ChatMessagesListener error.", firebaseFirestoreException)
                     return@addSnapshotListener
                 }
-
                 val items = mutableListOf<Item>()
                 querySnapshot!!.documents.forEach {
                     if (it["type"] == MessageType.TEXT) // 메세지 타입이 텍스트

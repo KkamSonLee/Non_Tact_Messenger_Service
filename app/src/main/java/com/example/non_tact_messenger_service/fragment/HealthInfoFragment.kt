@@ -10,6 +10,9 @@ import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.databinding.FragmentHealthInfoBinding
 import com.example.non_tact_messenger_service.util.Firebase_Database
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 class HealthInfoFragment : Fragment() {
     lateinit var binding: FragmentHealthInfoBinding

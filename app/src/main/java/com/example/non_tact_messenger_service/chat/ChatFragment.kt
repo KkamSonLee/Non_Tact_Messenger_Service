@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,12 +23,15 @@ import com.example.non_tact_messenger_service.chat.model.User
 import com.example.non_tact_messenger_service.model.Doctor
 import com.example.non_tact_messenger_service.model.Patient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.fragment_chat.*
+import kotlinx.android.synthetic.main.item_health_info.*
+import splitties.fragmentargs.arg
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -44,6 +48,8 @@ class ChatFragment : Fragment() {
     private var shouldInitRecyclerView = true // 리싸이클러뷰 구동을 위한 변수
     private lateinit var messagesSection: Section // 그루피 라이브러리를 위한 요소
 
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
@@ -55,8 +61,7 @@ class ChatFragment : Fragment() {
     ): View? {
 
 
-        //supportActionBar?.title = intent.getStringExtra(AppConstants.USER_NAME) firebaseauth 사용자가 아닌 다른 사용자 아이디를 이전에 받아와야함
-        otherUserID = "qUnZoyaFHpqbAIWtbf2B" // 임시로 상대방 사용자 id를 넣어줌
+        otherUserID = (activity as MainActivity).otherUID
         if ((activity as MainActivity).userType) {
 
             Firebase_Database.getDoctorUser {
@@ -69,25 +74,31 @@ class ChatFragment : Fragment() {
                 Username = it.base_user.name
             }
         }
+
+
         Firebase_Database.getOrCreateChatChannel(otherUserID) { channelId -> // 파이어베이스에서 get하거나 create한 채널 아이디를 통해서 사용함
 
             currentChannelId = channelId
+
+            val suggestionMessage = TextMessage(
+                (activity as MainActivity).suggestionMessage, Calendar.getInstance().time,
+                FirebaseAuth.getInstance().currentUser!!.uid,otherUserID, "",
+                MessageType.TEXT
+            )
+            Firebase_Database.sendMessage(suggestionMessage,channelId)
 
             messageListenerRegistration =
                 Firebase_Database.addChatMessagesListener(
                     channelId,
                     this.activity,
                     this::updateRecyclerView
-                ) // observer를 달아줌
-
-            //val sendbtn = view.findViewById<Button>(R.id.btn_sendmsg)
+                )
 
             btn_sendmsg.setOnClickListener { // 전송버튼에 대한 클릭벤트
                 val messageToSend = TextMessage(
                     sendinput.text.toString(), Calendar.getInstance().time,
                     FirebaseAuth.getInstance().currentUser!!.uid,
-                    otherUserID,
-                    Username,
+                    otherUserID, Username,
                     MessageType.TEXT
                 ) //FirebaseAuth.getInstance().currentUser!!.uid
 

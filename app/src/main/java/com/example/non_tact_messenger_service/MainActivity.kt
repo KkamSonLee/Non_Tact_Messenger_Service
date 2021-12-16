@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity() {
     var userType: Boolean = false
     private lateinit var auth: FirebaseAuth
     lateinit var otherUID: String
+    lateinit var suggestionMessage: String
+
+
     var fragment_Container =
         listOf<Fragment>(
             ProfileFragment(),
