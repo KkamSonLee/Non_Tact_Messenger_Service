@@ -65,7 +65,7 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
                             (activity as MainActivity).otherUID = data!!.uid.toString()
                             (activity as MainActivity).suggestionMessage = binding_dialog.seggestionEdit.text.toString()
                             (activity as MainActivity).fragmentChange(4)
-                            Log.d("suggestion msg",binding_dialog.seggestionEdit.text.toString())
+                            Log.d("suggestion msg",(activity as MainActivity).otherUID)
                         }
                     })
                     dlg.setNegativeButton("취소", null)

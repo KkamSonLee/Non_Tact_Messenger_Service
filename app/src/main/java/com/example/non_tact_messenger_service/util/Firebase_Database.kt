@@ -81,8 +81,9 @@ object Firebase_Database {
 
     fun setPatientUser(health_title: String, health_detail: String) {
         val userFieldMap = mutableMapOf<String, Any>()
-        if (health_title.isNotBlank() && health_detail.isNotBlank()) userFieldMap["health_title"] =
-            HealthInfo(health_title, health_detail)
+        if (health_title.isNotBlank() && health_detail.isNotBlank())
+            userFieldMap["health_title"] = health_title
+            userFieldMap["health_detail"] = health_detail
         currentUserDocRef.update(userFieldMap)
     }
 
@@ -156,9 +157,6 @@ object Firebase_Database {
         onListen: (List<Item>) -> Unit
         //onListen: (RecyclerView.ViewHolder) -> Unit
     ): ListenerRegistration {
-        Log.d("sad", "sadas")
-        var activity = MainActivity()
-        activity.Notification()
         return chatChannelsCollectionRef.document(channelId).collection("messages")
             .orderBy("time")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->

@@ -49,11 +49,6 @@ class ChatFragment : Fragment() {
     private lateinit var messagesSection: Section // 그루피 라이브러리를 위한 요소
 
 
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,7 +56,8 @@ class ChatFragment : Fragment() {
     ): View? {
 
 
-        otherUserID = (activity as MainActivity).otherUID
+        //supportActionBar?.title = intent.getStringExtra(AppConstants.USER_NAME) firebaseauth 사용자가 아닌 다른 사용자 아이디를 이전에 받아와야함
+        otherUserID = (activity as MainActivity).otherUID // 임시로 상대방 사용자 id를 넣어줌
         if ((activity as MainActivity).userType) {
 
             Firebase_Database.getDoctorUser {
@@ -79,14 +75,14 @@ class ChatFragment : Fragment() {
         Firebase_Database.getOrCreateChatChannel(otherUserID) { channelId -> // 파이어베이스에서 get하거나 create한 채널 아이디를 통해서 사용함
 
             currentChannelId = channelId
-
-            val suggestionMessage = TextMessage(
-                (activity as MainActivity).suggestionMessage, Calendar.getInstance().time,
-                FirebaseAuth.getInstance().currentUser!!.uid,otherUserID, "",
-                MessageType.TEXT
-            )
-            Firebase_Database.sendMessage(suggestionMessage,channelId)
-
+            if((activity as MainActivity).userType){
+                val suggestionMessage = TextMessage(
+                    (activity as MainActivity).suggestionMessage, Calendar.getInstance().time,
+                    FirebaseAuth.getInstance().currentUser!!.uid, otherUserID, "",
+                    MessageType.TEXT
+                )
+                Firebase_Database.sendMessage(suggestionMessage, channelId)
+            }
             messageListenerRegistration =
                 Firebase_Database.addChatMessagesListener(
                     channelId,
@@ -173,6 +169,7 @@ class ChatFragment : Fragment() {
         else
             updateItems()
 
+        (activity as MainActivity).Notification()
         chatrecycler.scrollToPosition(chatrecycler.adapter!!.itemCount - 1)
     }
 }

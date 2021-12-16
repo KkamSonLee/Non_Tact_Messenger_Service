@@ -34,8 +34,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     lateinit var otherUID: String
     lateinit var suggestionMessage: String
-
-
     var fragment_Container =
         listOf<Fragment>(
             ProfileFragment(),
@@ -51,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         auth = Firebase.auth
+
+
         if (intent.hasExtra("user")) {
             if (intent.getBooleanExtra("user", false)) {
                 fragmentChange(2)
@@ -63,19 +63,35 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             FirebaseFirestore.getInstance().collection("Users")
-                .document(FirebaseAuth.getInstance().currentUser!!.uid).get().addOnSuccessListener {
-                var user = it.get("base_user")
-                val objec = user as MutableMap<String, Any>
-                userType = objec["userType"] as Boolean
-                if (userType) {
-                    fragmentChange(3)
-                } else {
-                    fragmentChange(7)
+                .document(FirebaseAuth.getInstance().currentUser!!.uid).get()
+                .addOnSuccessListener {
+                    var user = it.get("base_user")
+                    val objec = user as MutableMap<String, Any>
+                    userType = objec["userType"] as Boolean
+                    if (userType) {
+                        fragmentChange(3)
+                    } else {
+                        FirebaseFirestore.getInstance().collection("Users")
+                            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                            .collection("chating_room").get().addOnSuccessListener {
+                                it.forEach {
+                                    otherUID = it.id
+                                    Log.d("asdf", it.id)
+                                }
+                                if (intent.hasExtra("noti")) {
+                                    fragmentChange(4)
+                                } else {
+                                    fragmentChange(7)
+                                }
+                            }
+
+                    }
                 }
-            }
         }
+
         setContentView(binding.root)
     }
+
     // 환자 - 구분(Choice Ac) - > 회원가입(Sign Fra) - > 증상입력(SearchFra) -> 건강정보 기입(HealthInfo Fra) -> 연결 대기(Buffering Fra) -> 채팅방(Chat Fra)
     // 환자(로그인 이후) - 증상입력(Search Fra) -> 건강정보 기입 -> 연결 대기 -> 채팅방
     // 의료인 - 구분 -> 회원가입 -> 의료인 인증(DoctorCerti Fra) -> 내 프로필 기입(Profile Fra) -> 환자 건강정보 리스트(Select Fra) -> 연결 대기(Buffering Fra) -> 채팅방(Chat Fra)
@@ -102,7 +118,7 @@ class MainActivity : AppCompatActivity() {
             .setAutoCancel(true) //알림 클릭시 삭제 여부
 
         val intent = Intent(applicationContext, MainActivity::class.java)
-        intent.putExtra("water", message) //key랑 message
+        intent.putExtra("noti", message) //key랑 message
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
 
         val pendingIntent = PendingIntent.getActivity(
@@ -120,6 +136,7 @@ class MainActivity : AppCompatActivity() {
 
         manager.notify(2, notification)
     }
+
     fun fragmentChange(index: Int) {
         supportFragmentManager.beginTransaction()
             .replace(binding.fragmentContainer.id, fragment_Container[index - 1]).commit()
