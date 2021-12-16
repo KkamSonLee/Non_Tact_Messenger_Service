@@ -20,7 +20,7 @@ class SearchFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
         binding.search.setOnClickListener {
-            Log.d("health title",binding.healthTitle.text.toString())
+            (activity as MainActivity).healthTitle = binding.healthTitle.text.toString()
             (activity as (MainActivity)).fragmentChange(6)
         }
         return binding.root

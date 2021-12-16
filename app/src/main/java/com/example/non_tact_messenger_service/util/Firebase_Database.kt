@@ -21,10 +21,10 @@ object Firebase_Database {
 
     private val currentUserDocRef: DocumentReference // 파이어베이스 어센틱케이션을 통해서 해당 파이어스토어의 document를 찾아간다.
         get() = firestoreInstance.document(
-            "Users/${
-                FirebaseAuth.getInstance().currentUser?.uid
-                    ?: throw NullPointerException("UID is null.")
-            }"
+                "Users/${
+                    FirebaseAuth.getInstance().currentUser?.uid
+                            ?: throw NullPointerException("UID is null.")
+                }"
         )
 
     private val chatChannelsCollectionRef = firestoreInstance.collection("chat_room")
@@ -35,16 +35,24 @@ object Firebase_Database {
         currentUserDocRef.get().addOnSuccessListener { documentSnapshot ->
             if (!documentSnapshot.exists()) {
                 val newUser = User(FirebaseAuth.getInstance().currentUser?.displayName ?: "",
-                    "", null, mutableListOf())
+                        "", null, mutableListOf())
                 currentUserDocRef.set(newUser).addOnSuccessListener {
                     onComplete()
                 }
-            }
-            else
+            } else
                 onComplete()
         }
     }
 
+    fun getHealthInfo() {
+        firestoreInstance.collection("Users").get().addOnSuccessListener {
+
+            for (document in it) {
+                firestoreInstance.collection("Users").document(document.id).collection("chating_room").document().get().addOnSuccessListener {
+                }
+            }
+        }
+    }
 
     fun updateCurrentUser(name: String = "", bio: String = "", profilePicturePath: String? = null) {
         val userFieldMap = mutableMapOf<String, Any>()
@@ -55,12 +63,20 @@ object Firebase_Database {
         currentUserDocRef.update(userFieldMap)
     }
 
+    fun setPatientUser(health_title: String, health_detail: String) {
+        val userFieldMap = mutableMapOf<String, Any>()
+        if (health_title.isNotBlank()) userFieldMap["health_title"] = health_title
+        if (health_detail.isNotBlank()) userFieldMap["health_detail"] = health_detail
+        currentUserDocRef.collection("healthinfo").document().set(userFieldMap)
+    }
+
     fun getCurrentUser(onComplete: (User) -> Unit) {
         currentUserDocRef.get()
-            .addOnSuccessListener {
-                onComplete(it.toObject(User::class.java)!!)
-            }
+                .addOnSuccessListener {
+                    onComplete(it.toObject(User::class.java)!!)
+                }
     }
+
 
 //    fun addUsersListener(context: Context, onListen: (List<Item>) -> Unit): ListenerRegistration {
 //        return firestoreInstance.collection("users")
@@ -83,66 +99,66 @@ object Firebase_Database {
 
 
     fun getOrCreateChatChannel( //채팅방 생성
-        otherUserId: String,
-        onComplete: (channelId: String) -> Unit
+            otherUserId: String,
+            onComplete: (channelId: String) -> Unit
     ) {
         currentUserDocRef.collection("chating_room")
-            .document(otherUserId).get().addOnSuccessListener {
-                if (it.exists()) {
-                    onComplete(it["channelId"] as String)
-                    return@addOnSuccessListener
+                .document(otherUserId).get().addOnSuccessListener {
+                    if (it.exists()) {
+                        onComplete(it["channelId"] as String)
+                        return@addOnSuccessListener
+                    }
+
+                    val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid // 현재 어플 사용자의 auth및 uid를 얻음
+                    //val currentUserId = ("eurPdsswDs3rMG35hqM7") // 테스트용
+                    val newChannel = chatChannelsCollectionRef.document() //firestore 에 새로운 document(채팅방)추가
+                    newChannel.set(ChatChannel(mutableListOf(currentUserId, otherUserId)))
+
+                    currentUserDocRef // 현재 유저에게 채팅방 추가
+                            .collection("chating_room")
+                            .document(otherUserId)
+                            .set(mapOf("channelId" to newChannel.id))
+
+                    firestoreInstance.collection("Users").document(otherUserId) // 다른방 유저에게 채팅방 추가
+                            .collection("chating_room")
+                            .document(currentUserId)
+                            .set(mapOf("channelId" to newChannel.id))
+
+                    onComplete(newChannel.id)
                 }
-
-               val currentUserId = FirebaseAuth.getInstance().currentUser!!.uid // 현재 어플 사용자의 auth및 uid를 얻음
-                //val currentUserId = ("eurPdsswDs3rMG35hqM7") // 테스트용
-                val newChannel = chatChannelsCollectionRef.document() //firestore 에 새로운 document(채팅방)추가
-                newChannel.set(ChatChannel(mutableListOf(currentUserId, otherUserId)))
-
-                currentUserDocRef // 현재 유저에게 채팅방 추가
-                    .collection("chating_room")
-                    .document(otherUserId)
-                    .set(mapOf("channelId" to newChannel.id))
-
-                firestoreInstance.collection("Users").document(otherUserId) // 다른방 유저에게 채팅방 추가
-                    .collection("chating_room")
-                    .document(currentUserId)
-                    .set(mapOf("channelId" to newChannel.id))
-
-                onComplete(newChannel.id)
-            }
     }
 
     fun addChatMessagesListener( // 채팅방의 메세지 변화를 감지할 Observer
-        channelId: String, context: Context?,
-        onListen: (List<Item>)-> Unit
-        //onListen: (RecyclerView.ViewHolder) -> Unit
+            channelId: String, context: Context?,
+            onListen: (List<Item>) -> Unit
+            //onListen: (RecyclerView.ViewHolder) -> Unit
     ): ListenerRegistration {
         return chatChannelsCollectionRef.document(channelId).collection("messages")
-            .orderBy("time")
-            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                if (firebaseFirestoreException != null) {
-                    Log.e("FIRESTORE", "ChatMessagesListener error.", firebaseFirestoreException)
-                    return@addSnapshotListener
-                }
+                .orderBy("time")
+                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    if (firebaseFirestoreException != null) {
+                        Log.e("FIRESTORE", "ChatMessagesListener error.", firebaseFirestoreException)
+                        return@addSnapshotListener
+                    }
 
-                val items = mutableListOf<Item>()
-                querySnapshot!!.documents.forEach {
-                    if (it["type"] == MessageType.TEXT) // 메세지 타입이 텍스트
-                        items.add(TextMessageItem(it.toObject(TextMessage::class.java)!!, context!!))
-                    else
-                        items.add(
-                            ImageMessageItem(it.toObject(ImageMessage::class.java)!!, context!!)
-                        )
-                    return@forEach
+                    val items = mutableListOf<Item>()
+                    querySnapshot!!.documents.forEach {
+                        if (it["type"] == MessageType.TEXT) // 메세지 타입이 텍스트
+                            items.add(TextMessageItem(it.toObject(TextMessage::class.java)!!, context!!))
+                        else
+                            items.add(
+                                    ImageMessageItem(it.toObject(ImageMessage::class.java)!!, context!!)
+                            )
+                        return@forEach
+                    }
+                    onListen(items)
                 }
-                onListen(items)
-            }
     }
 
     fun sendMessage(message: Message, channelId: String) {
         chatChannelsCollectionRef.document(channelId)
-            .collection("messages")
-            .add(message)
+                .collection("messages")
+                .add(message)
     }
 
     fun getFCMRegistrationTokens(onComplete: (tokens: MutableList<String>) -> Unit) {
@@ -155,4 +171,5 @@ object Firebase_Database {
     fun setFCMRegistrationTokens(registrationTokens: MutableList<String>) {
         currentUserDocRef.update(mapOf("registrationTokens" to registrationTokens))
     }
+
 }

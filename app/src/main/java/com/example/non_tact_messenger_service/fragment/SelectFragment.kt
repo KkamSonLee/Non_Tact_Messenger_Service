@@ -43,7 +43,7 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
                 data: HealthInfo,
                 position: Int
             ) {
-                Log.d("suggestion", "success")
+                //Log.d("suggestion", "success")
                 binding_dialog = ContactMessageDialogBinding.inflate(layoutInflater, container, false)
                 val dlg = AlertDialog.Builder(requireContext())
                 dlg.setView(binding_dialog!!.root)
