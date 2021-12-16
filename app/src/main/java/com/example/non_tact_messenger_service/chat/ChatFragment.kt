@@ -43,8 +43,6 @@ private const val RC_SELECT_IMAGE = 2
 
 class ChatFragment : Fragment() {
 
-    private lateinit var DoctorUser: Doctor // 알림을 위한 User 변수
-    private lateinit var PatientUser: Patient // 알림을 위한 User 변수
     private lateinit var Username: String
     private lateinit var currentChannelId: String // 채널 아이디
     private lateinit var otherUserID: String //채팅방 상대방 아이디
@@ -77,12 +75,10 @@ class ChatFragment : Fragment() {
         }
         if ((activity as MainActivity).userType) {
             Firebase_Database.getDoctorUser {
-                DoctorUser = it
                 Username = it.base_user.name
             }
         } else {
             Firebase_Database.getPatientUser {
-                PatientUser = it
                 Username = it.base_user.name
             }
         }
@@ -120,7 +116,7 @@ class ChatFragment : Fragment() {
             if ((activity as MainActivity).userType) {
                 hire_btn.visibility = View.INVISIBLE
                 profile_btn.visibility = View.INVISIBLE
-            }else{
+            } else {
                 hire_btn.visibility = View.VISIBLE
                 profile_btn.visibility = View.VISIBLE
             }
@@ -193,13 +189,14 @@ class ChatFragment : Fragment() {
     }
 
     private fun updateRecyclerView(messages: List<Item>) { // 해당 함수에서 리싸이클러뷰의 레이아웃 매니저설정과 어댑터를 달아줌
+        (activity as MainActivity).Notification()
         fun init() {
             chatrecycler.apply {
                 layoutManager = LinearLayoutManager(this@ChatFragment.context) // 리싸이클러뷰 레이아웃 매니저
                 adapter = GroupAdapter<GroupieViewHolder>().apply {
                     messagesSection = Section(messages) // 어댑터에 아이템들을 넣어줌
-                    if(!Firebase_Database.is_enabled){
-                        if(messagesSection.groups.size>=2){
+                    if (!Firebase_Database.is_enabled) {
+                        if (messagesSection.groups.size >= 2) {
                             Firebase_Database.is_enabled = true
                             sendinput.isEnabled = true
                         }
@@ -210,14 +207,14 @@ class ChatFragment : Fragment() {
             shouldInitRecyclerView = false
         }
 
-        fun updateItems() = messagesSection.update(messages)
+        fun updateItems() {
+            messagesSection.update(messages)
+        }
         if (shouldInitRecyclerView)
             init()
-        else{
+        else {
             updateItems()
         }
-
-        (activity as MainActivity).Notification()
         chatrecycler.scrollToPosition(chatrecycler.adapter!!.itemCount - 1)
     }
 }

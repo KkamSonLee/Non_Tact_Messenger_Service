@@ -119,13 +119,13 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.putExtra("noti", message) //key랑 message
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
 
         val pendingIntent = PendingIntent.getActivity(
             applicationContext,
             2,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_CANCEL_CURRENT
         )
         builder.setContentIntent(pendingIntent)
 

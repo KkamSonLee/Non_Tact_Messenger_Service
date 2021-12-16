@@ -39,7 +39,7 @@ class RecyclerviewPatientHealthAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: ItemHealthInfoBinding) :
+    inner class ViewHolder(binding: ItemHealthInfoBinding):
         RecyclerView.ViewHolder(binding.root) {
         val health_title: TextView = binding.healthsimple
         val health_detail: TextView = binding.healthlong
