@@ -1,7 +1,9 @@
 package com.example.non_tact_messenger_service.chat
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -11,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.non_tact_messenger_service.MainActivity
@@ -20,6 +23,7 @@ import com.example.non_tact_messenger_service.Storage
 import com.example.non_tact_messenger_service.chat.model.ImageMessage
 import com.example.non_tact_messenger_service.chat.model.TextMessage
 import com.example.non_tact_messenger_service.chat.model.User
+import com.example.non_tact_messenger_service.databinding.DoctorProfileDialogBinding
 import com.example.non_tact_messenger_service.model.Doctor
 import com.example.non_tact_messenger_service.model.Patient
 import com.google.firebase.auth.FirebaseAuth
@@ -47,19 +51,31 @@ class ChatFragment : Fragment() {
     private lateinit var messageListenerRegistration: ListenerRegistration //FCM 알림을 위한 변수
     private var shouldInitRecyclerView = true // 리싸이클러뷰 구동을 위한 변수
     private lateinit var messagesSection: Section // 그루피 라이브러리를 위한 요소
-
+    lateinit var binding: DoctorProfileDialogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        if (Firebase_Database.is_enabled) {
+            sendinput.isEnabled = true
+        }
 
         //supportActionBar?.title = intent.getStringExtra(AppConstants.USER_NAME) firebaseauth 사용자가 아닌 다른 사용자 아이디를 이전에 받아와야함
         otherUserID = (activity as MainActivity).otherUID // 임시로 상대방 사용자 id를 넣어줌
-        if ((activity as MainActivity).userType) {
 
+        binding = DoctorProfileDialogBinding.inflate(layoutInflater, container, false)
+        if (!(activity as MainActivity).userType) {
+
+            FirebaseFirestore.getInstance().collection("Users").document(otherUserID).get()
+                .addOnSuccessListener {
+                    var us = it.toObject(Doctor::class.java)!!
+                    binding.doctorName.text = us.base_user.name
+                    binding.doctorBio.text = us.base_user.bio
+                }
+        }
+        if ((activity as MainActivity).userType) {
             Firebase_Database.getDoctorUser {
                 DoctorUser = it
                 Username = it.base_user.name
@@ -75,7 +91,7 @@ class ChatFragment : Fragment() {
         Firebase_Database.getOrCreateChatChannel(otherUserID) { channelId -> // 파이어베이스에서 get하거나 create한 채널 아이디를 통해서 사용함
 
             currentChannelId = channelId
-            if((activity as MainActivity).userType){
+            if ((activity as MainActivity).userType) {
                 val suggestionMessage = TextMessage(
                     (activity as MainActivity).suggestionMessage, Calendar.getInstance().time,
                     FirebaseAuth.getInstance().currentUser!!.uid, otherUserID, "",
@@ -89,7 +105,27 @@ class ChatFragment : Fragment() {
                     this.activity,
                     this::updateRecyclerView
                 )
+            hire_btn.setOnClickListener {
+                Firebase_Database.is_enabled = true
+                sendinput.isEnabled = true
+                Toast.makeText(context, "고용되었습니다!", Toast.LENGTH_SHORT).show()
+            }
+            profile_btn.setOnClickListener {
+                val dlg = AlertDialog.Builder(requireContext())
+                dlg.setView(binding!!.root)
+                if ((activity as MainActivity).userType) {
+                    hire_btn.visibility = View.INVISIBLE
+                    profile_btn.visibility = View.INVISIBLE
+                }else{
+                    hire_btn.visibility = View.VISIBLE
+                    profile_btn.visibility = View.VISIBLE
+                }
+                dlg.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
 
+                })
+                dlg.setNegativeButton("취소", null)
+                dlg.show()
+            }
             btn_sendmsg.setOnClickListener { // 전송버튼에 대한 클릭벤트
                 val messageToSend = TextMessage(
                     sendinput.text.toString(), Calendar.getInstance().time,
@@ -115,7 +151,6 @@ class ChatFragment : Fragment() {
                 )
             }
         }
-
         return inflater.inflate(R.layout.fragment_chat, container, false)
     }
 
@@ -151,7 +186,6 @@ class ChatFragment : Fragment() {
     }
 
     private fun updateRecyclerView(messages: List<Item>) { // 해당 함수에서 리싸이클러뷰의 레이아웃 매니저설정과 어댑터를 달아줌
-
         fun init() {
             chatrecycler.apply {
                 layoutManager = LinearLayoutManager(this@ChatFragment.context) // 리싸이클러뷰 레이아웃 매니저
