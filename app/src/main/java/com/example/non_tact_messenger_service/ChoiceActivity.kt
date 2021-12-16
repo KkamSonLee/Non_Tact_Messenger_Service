@@ -18,6 +18,7 @@ class ChoiceActivity : AppCompatActivity() {
             finish()
         }
         binding.patientBtn.setOnClickListener {
+            intent.putExtra("user", false)
             startActivity(intent)
             finish()
         }
