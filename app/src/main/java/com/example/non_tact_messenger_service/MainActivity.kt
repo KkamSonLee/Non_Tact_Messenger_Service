@@ -14,11 +14,13 @@ import android.R
 import androidx.fragment.app.Fragment
 import com.example.non_tact_messenger_service.chat.ChatFragment
 import com.example.non_tact_messenger_service.fragment.*
+import com.example.non_tact_messenger_service.util.Firebase_Database
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     var intent_data:Int = 0
+    var healthTitle:String = ""
     private lateinit var auth: FirebaseAuth
     var fragment_Container =
         listOf<Fragment>(ProfileFragment(), SignupFragment(), SelectFragment(),ChatFragment(), DoctorCertifiedFragment(), HealthInfoFragment(), SearchFragment())
@@ -26,19 +28,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         auth = Firebase.auth
+        Firebase_Database.getHealthInfo()
         if(intent.hasExtra("user")){
             fragmentChange(2)
             intent_data= intent.getIntExtra("user", 0)
         }else{
-            fragmentChange(1)
-        }
+            Firebase_Database.getCurrentUser {
 
+            }
+            fragmentChange(5)
+        }
         setContentView(binding.root)
     }
-    // 환자 - 구분 - > 회원가입 - > 건강정보 기입 -> 건강정보 리스트 and 채팅방(의사 프로필보기)
-    // 환자(로그인 이후) - 건강정보 기입 and 건강정보 리스트 and 채팅방
-    // 의료인 - 구분 -> 회원가입 -> 의료인 인증 -> 내 프로필 기입 -> 환자 건강정보 리스트 and 채팅방
-    // 의료인(로그인 이후) - 환자 건강정보 리스트 and 채팅방
+    // 환자 - 구분(Choice Ac) - > 회원가입(Sign Fra) - > 증상입력(SearchFra) -> 건강정보 기입(HealthInfo Fra) -> 연결 대기(Buffering Fra) -> 채팅방(Chat Fra)
+    // 환자(로그인 이후) - 증상입력(Search Fra) -> 건강정보 기입 -> 연결 대기 -> 채팅방
+    // 의료인 - 구분 -> 회원가입 -> 의료인 인증(DoctorCerti Fra) -> 내 프로필 기입(Profile Fra) -> 환자 건강정보 리스트(Select Fra) -> 연결 대기(Buffering Fra) -> 채팅방(Chat Fra)
+    // 의료인(로그인 이후) - 환자 건강정보 리스트 -> 연결 대기 -> 채팅방
+
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
@@ -46,6 +52,8 @@ class MainActivity : AppCompatActivity() {
             reload();
         }
     }
+
+
     private fun createAccount(email: String, password: String) {
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)

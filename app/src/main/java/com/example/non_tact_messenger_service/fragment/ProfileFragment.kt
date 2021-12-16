@@ -17,8 +17,8 @@ import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.Storage
 import com.example.non_tact_messenger_service.databinding.FragmentProfileBinding
+import com.example.non_tact_messenger_service.glide.GlideApp
 import com.example.non_tact_messenger_service.util.Firebase_Database
-import com.firebase.ui.auth.AuthUI
 import java.io.ByteArrayOutputStream
 
 
@@ -109,7 +109,7 @@ class ProfileFragment : Fragment() {
                 binding.editTextName.setText(user.name)
                 if (!pictureJustChanged && user.profilePicturePath != null) {
 
-                    Glide.with(this)
+                    GlideApp.with(this)
                         .load(Storage.pathToReference(user.profilePicturePath))
                         .placeholder(R.drawable.fui_ic_check_circle_black_128dp)
                         .into(binding.imageViewProfilePicture)

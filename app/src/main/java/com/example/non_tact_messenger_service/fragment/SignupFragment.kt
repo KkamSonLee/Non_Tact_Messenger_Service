@@ -35,7 +35,7 @@ import splitties.fragments.start
 class SignupFragment : Fragment() {
     private val RC_SIGN_IN = 1
     lateinit var binding: FragmentSignupBinding
-    var receive_data:Int = 0
+    var receive_data:Int = 0 //
     private val signInProviders =
         listOf(
             AuthUI.IdpConfig.EmailBuilder()
@@ -88,7 +88,6 @@ class SignupFragment : Fragment() {
 
                     val registrationToken = FirebaseMessaging.getInstance().token
                     FirebaseIDService.addTokenToFirestore(registrationToken.toString())
-
                     mainActivity?.fragmentChange(3)
                 }
             }

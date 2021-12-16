@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.non_tact_messenger_service.MainActivity
 import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.databinding.FragmentHealthInfoBinding
+import com.example.non_tact_messenger_service.util.Firebase_Database
 
 class HealthInfoFragment : Fragment() {
     lateinit var binding: FragmentHealthInfoBinding
@@ -17,8 +19,9 @@ class HealthInfoFragment : Fragment() {
     ): View? {
         binding = FragmentHealthInfoBinding.inflate(layoutInflater, container, false)
         binding.sendHealth.setOnClickListener {
-            Log.d("health detail",binding.healthDetail.text.toString())
-
+            Firebase_Database.setPatientUser((activity as MainActivity).healthTitle,
+                    binding.healthDetail.text.toString())
+            (activity as MainActivity).fragmentChange(4)
         }
         return binding.root
     }
