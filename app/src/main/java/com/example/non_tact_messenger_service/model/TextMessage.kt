@@ -1,7 +1,5 @@
-package com.example.non_tact_messenger_service.chat.model
+package com.example.non_tact_messenger_service.model
 
-import com.example.non_tact_messenger_service.chat.Message
-import com.example.non_tact_messenger_service.chat.MessageType
 import java.util.*
 
 data class TextMessage(
@@ -10,7 +8,8 @@ data class TextMessage(
     override val senderId: String,
     override val recipientId: String,
     override val senderName: String,
-    override val type: String = MessageType.TEXT)
+    override val type: String = MessageType.TEXT
+)
     : Message {
     constructor() : this("", Date(0), "", "","", "")
     }

@@ -1,4 +1,4 @@
-package com.example.non_tact_messenger_service.chat.model
+package com.example.non_tact_messenger_service.model
 
 data class User(
     val name: String,

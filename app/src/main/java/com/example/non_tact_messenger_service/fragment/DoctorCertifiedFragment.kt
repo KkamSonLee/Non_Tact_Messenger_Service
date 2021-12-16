@@ -7,15 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.core.view.get
-import com.example.non_tact_messenger_service.MainActivity
-import com.example.non_tact_messenger_service.WebAppInterface
-import com.example.non_tact_messenger_service.WebCommunication
+import com.example.non_tact_messenger_service.ViewController.MainActivity
+import com.example.non_tact_messenger_service.ViewController.WebAppInterface
+import com.example.non_tact_messenger_service.ViewController.WebCommunication
 import com.example.non_tact_messenger_service.databinding.FragmentDoctorCertifiedBinding
-import com.example.non_tact_messenger_service.util.Firebase_Database
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

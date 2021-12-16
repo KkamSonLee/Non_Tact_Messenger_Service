@@ -1,16 +1,14 @@
-package com.example.non_tact_messenger_service.chat.recycler
+package com.example.non_tact_messenger_service.adapter
 
 
 import android.content.Context
 
 import com.example.non_tact_messenger_service.R
-import com.example.non_tact_messenger_service.chat.model.TextMessage
-import com.xwray.groupie.Item
+import com.example.non_tact_messenger_service.model.TextMessage
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 
 
 import kotlinx.android.synthetic.main.item_text_message.*
-import java.text.SimpleDateFormat
 
 class TextMessageItem (val message: TextMessage, val context: Context)
     : MessageItem(message)

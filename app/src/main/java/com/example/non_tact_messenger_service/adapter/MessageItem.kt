@@ -1,8 +1,8 @@
-package com.example.non_tact_messenger_service.chat.recycler
+package com.example.non_tact_messenger_service.adapter
 
 import android.view.Gravity
 import android.widget.FrameLayout
-import com.example.non_tact_messenger_service.chat.Message
+import com.example.non_tact_messenger_service.model.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item

@@ -1,9 +1,6 @@
-package com.example.non_tact_messenger_service
+package com.example.non_tact_messenger_service.model
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import java.lang.NullPointerException
 import java.util.*
 
 

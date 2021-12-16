@@ -1,4 +1,4 @@
-package com.example.non_tact_messenger_service.chat
+package com.example.non_tact_messenger_service.model
 
 import java.util.*
 

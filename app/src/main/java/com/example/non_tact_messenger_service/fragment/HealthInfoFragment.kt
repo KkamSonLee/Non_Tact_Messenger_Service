@@ -1,16 +1,14 @@
 package com.example.non_tact_messenger_service.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.non_tact_messenger_service.MainActivity
+import com.example.non_tact_messenger_service.ViewController.MainActivity
 import com.example.non_tact_messenger_service.databinding.FragmentHealthInfoBinding
-import com.example.non_tact_messenger_service.util.Firebase_Database
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.non_tact_messenger_service.model.Firebase_Database
 
 class HealthInfoFragment : Fragment() {
     lateinit var binding: FragmentHealthInfoBinding

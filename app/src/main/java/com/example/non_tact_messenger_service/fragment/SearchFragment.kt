@@ -1,15 +1,12 @@
 package com.example.non_tact_messenger_service.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.non_tact_messenger_service.MainActivity
-import com.example.non_tact_messenger_service.R
+import com.example.non_tact_messenger_service.ViewController.MainActivity
 import com.example.non_tact_messenger_service.databinding.FragmentSearchBinding
-import com.example.non_tact_messenger_service.databinding.FragmentSelectBinding
 
 class SearchFragment : Fragment() {
     lateinit var binding: FragmentSearchBinding

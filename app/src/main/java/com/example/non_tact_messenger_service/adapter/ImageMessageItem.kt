@@ -1,16 +1,16 @@
-package com.example.non_tact_messenger_service.chat.recycler
+package com.example.non_tact_messenger_service.adapter
 
 import android.content.Context
 import com.bumptech.glide.Glide
 import com.example.non_tact_messenger_service.R
-import com.example.non_tact_messenger_service.Storage
-import com.example.non_tact_messenger_service.chat.model.ImageMessage
+import com.example.non_tact_messenger_service.model.Storage
+import com.example.non_tact_messenger_service.model.ImageMessage
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.item_image_message.*
 
 
 class ImageMessageItem(val message: ImageMessage,
-                       val context: Context) :MessageItem(message){
+                       val context: Context) : MessageItem(message){
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) { //리싸이클러뷰에 적용
         super.bind(viewHolder,position)

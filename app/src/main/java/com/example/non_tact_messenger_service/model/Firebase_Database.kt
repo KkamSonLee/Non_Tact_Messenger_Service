@@ -1,24 +1,14 @@
-package com.example.non_tact_messenger_service.util
+package com.example.non_tact_messenger_service.model
 
 import android.content.Context
 import android.util.Log
-import com.example.non_tact_messenger_service.MainActivity
-import com.example.non_tact_messenger_service.chat.*
-import com.example.non_tact_messenger_service.chat.Message
-import com.example.non_tact_messenger_service.chat.model.ImageMessage
-import com.example.non_tact_messenger_service.chat.model.TextMessage
-import com.example.non_tact_messenger_service.chat.model.User
-import com.example.non_tact_messenger_service.chat.recycler.ImageMessageItem
-import com.example.non_tact_messenger_service.chat.recycler.TextMessageItem
-import com.example.non_tact_messenger_service.model.Doctor
-import com.example.non_tact_messenger_service.model.HealthInfo
-import com.example.non_tact_messenger_service.model.Item_HealthInfo
-import com.example.non_tact_messenger_service.model.Patient
+import com.example.non_tact_messenger_service.adapter.ImageMessageItem
+import com.example.non_tact_messenger_service.adapter.TextMessageItem
+import com.example.non_tact_messenger_service.model.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.xwray.groupie.kotlinandroidextensions.Item
 
 object Firebase_Database {

@@ -1,4 +1,4 @@
-package com.example.non_tact_messenger_service
+package com.example.non_tact_messenger_service.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,9 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.non_tact_messenger_service.databinding.ItemHealthInfoBinding
 import com.example.non_tact_messenger_service.model.Item_HealthInfo
-import com.firebase.ui.auth.data.model.User
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 class RecyclerviewPatientHealthAdapter(
     val values: ArrayList<Item_HealthInfo>

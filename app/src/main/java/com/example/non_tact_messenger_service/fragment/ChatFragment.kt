@@ -1,31 +1,27 @@
-package com.example.non_tact_messenger_service.chat
+package com.example.non_tact_messenger_service.fragment
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.non_tact_messenger_service.MainActivity
-import com.example.non_tact_messenger_service.util.Firebase_Database
+import com.example.non_tact_messenger_service.ViewController.MainActivity
+import com.example.non_tact_messenger_service.model.Firebase_Database
 import com.example.non_tact_messenger_service.R
-import com.example.non_tact_messenger_service.Storage
-import com.example.non_tact_messenger_service.chat.model.ImageMessage
-import com.example.non_tact_messenger_service.chat.model.TextMessage
-import com.example.non_tact_messenger_service.chat.model.User
+import com.example.non_tact_messenger_service.model.Storage
+import com.example.non_tact_messenger_service.model.MessageType
+import com.example.non_tact_messenger_service.model.ImageMessage
+import com.example.non_tact_messenger_service.model.TextMessage
 import com.example.non_tact_messenger_service.databinding.DoctorProfileDialogBinding
 import com.example.non_tact_messenger_service.model.Doctor
-import com.example.non_tact_messenger_service.model.Patient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
@@ -35,7 +31,6 @@ import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.item_health_info.*
-import splitties.fragmentargs.arg
 import java.io.ByteArrayOutputStream
 import java.util.*
 
