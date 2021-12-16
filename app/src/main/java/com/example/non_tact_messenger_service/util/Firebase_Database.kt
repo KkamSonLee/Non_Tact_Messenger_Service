@@ -31,7 +31,7 @@ object Firebase_Database {
     private val chatChannelsCollectionRef = firestoreInstance.collection("chat_room")
 //    private val currentUserDocRef: DocumentReference
 //        get() = firestoreInstance.document("/Users/eurPdsswDs3rMG35hqM7") //테스트용
-
+    
     fun initPatientUser(onComplete: () -> Unit) {
         currentUserDocRef.get().addOnSuccessListener { documentSnapshot ->
             if (!documentSnapshot.exists()) {
@@ -40,7 +40,7 @@ object Firebase_Database {
                     "", false
                 )
                 val newPatient = Patient(
-                    newUser, mutableListOf()
+                    newUser, mutableListOf(), mutableListOf()
                 )
                 currentUserDocRef.set(newPatient).addOnSuccessListener {
                     onComplete()
@@ -57,7 +57,7 @@ object Firebase_Database {
                     FirebaseAuth.getInstance().currentUser?.displayName ?: "",
                     "", true
                 )
-                val newDoctor = Doctor(newUser,"")
+                val newDoctor = Doctor(newUser, mutableListOf(),"")
                 currentUserDocRef.set(newDoctor).addOnSuccessListener {
                     onComplete()
                 }
