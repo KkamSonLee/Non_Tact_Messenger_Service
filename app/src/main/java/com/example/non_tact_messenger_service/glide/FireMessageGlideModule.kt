@@ -10,7 +10,7 @@ import com.google.firebase.storage.StorageReference
 import java.io.InputStream
 
 @GlideModule
-class FireMessageGlideModule : AppGlideModule() {
+class FireMessageGlideModule : AppGlideModule() { // Glide module for image upload
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         registry.append(
             StorageReference::class.java,

@@ -1,12 +1,11 @@
 package com.example.non_tact_messenger_service.notification
 
-import com.example.non_tact_messenger_service.util.Firebase_Database
+import com.example.non_tact_messenger_service.model.Firebase_Database
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 
-class FirebaseIDService : FirebaseMessagingService() {
+class FirebaseIDService : FirebaseMessagingService() { // notification service for FCM service
 
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)

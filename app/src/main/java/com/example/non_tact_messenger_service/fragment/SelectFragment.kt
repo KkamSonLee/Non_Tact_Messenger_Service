@@ -1,26 +1,20 @@
 package com.example.non_tact_messenger_service.fragment
 
 import android.app.AlertDialog
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.NotificationCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.non_tact_messenger_service.MainActivity
-import com.example.non_tact_messenger_service.RecyclerviewPatientHealthAdapter
+import com.example.non_tact_messenger_service.ViewController.MainActivity
+import com.example.non_tact_messenger_service.adapter.healthinfo.RecyclerviewPatientHealthAdapter
 import com.example.non_tact_messenger_service.databinding.ContactMessageDialogBinding
 import com.example.non_tact_messenger_service.databinding.FragmentSelectBinding
 import com.example.non_tact_messenger_service.model.Item_HealthInfo
-import com.example.non_tact_messenger_service.model.Patient
-import com.example.non_tact_messenger_service.util.Firebase_Database
+import com.example.non_tact_messenger_service.model.Users.Patient
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,61 +28,59 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
     lateinit var adapter: RecyclerviewPatientHealthAdapter
     lateinit var binding_dialog: ContactMessageDialogBinding
     lateinit var data: ArrayList<Item_HealthInfo>
-    val scope = CoroutineScope(Dispatchers.IO)//
+    val scope = CoroutineScope(Dispatchers.IO)//Asynchronized Process variable
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         data = ArrayList<Item_HealthInfo>()
         binding = FragmentSelectBinding.inflate(layoutInflater, container, false)
-        adapter = RecyclerviewPatientHealthAdapter(data)
-        getHealthInfo()
+        adapter = RecyclerviewPatientHealthAdapter(data)   //to connect item from recyclerview adapter
+        getHealthInfo()                                    //item initializing
 
-        binding.swipe.setOnRefreshListener {
+        binding.swipe.setOnRefreshListener {               //refresh data
             binding.swipe.isRefreshing = true
-            getHealthInfo()
+            getHealthInfo()                                //item update
         }
         adapter.itemOnClickListener =
-            object : RecyclerviewPatientHealthAdapter.OnItemClickListener {
+            object : RecyclerviewPatientHealthAdapter.OnItemClickListener {   //recyclerview itemclick event
                 override fun OnItemClick(
                     holder: RecyclerView.ViewHolder,
                     view: View,
                     data: Item_HealthInfo,
                     position: Int
                 ) {
-                    //Log.d("suggestion", "success")
                     binding_dialog =
                         ContactMessageDialogBinding.inflate(layoutInflater, container, false)
-                    val dlg = AlertDialog.Builder(requireContext())
-                    dlg.setView(binding_dialog!!.root)
+                    val dlg = AlertDialog.Builder(requireContext())     //dialog to suggestion message setting
+                    dlg.setView(binding_dialog!!.root)                  //diglog visible
                     dlg.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
-                        if (binding_dialog.seggestionEdit.text.isNotEmpty()) {
-                            (activity as MainActivity).otherUID = data!!.uid.toString()
-                            (activity as MainActivity).suggestionMessage = binding_dialog.seggestionEdit.text.toString()
-                            (activity as MainActivity).fragmentChange(4)
-                            Log.d("suggestion msg",(activity as MainActivity).otherUID)
+                        if (binding_dialog.seggestionEdit.text.isNotEmpty()) {               //message not empty
+                            (activity as MainActivity).otherUID = data!!.uid.toString()      //patient uid save
+                            (activity as MainActivity).suggestionMessage = binding_dialog.seggestionEdit.text.toString()  //doctor seggestion message
+                            (activity as MainActivity).fragmentChange(4)     //change to ChatFragment
                         }
                     })
                     dlg.setNegativeButton("취소", null)
                     dlg.show()
                 }
             }
-        adapter.notifyDataSetChanged()
-        binding.patientListview.adapter = adapter
+        adapter.notifyDataSetChanged()      //adapter item dataSetChanged notify
+        binding.patientListview.adapter = adapter    //adapter connect to recyclerview.adapter
         return binding.root
     }
 
 
-    private fun getHealthInfo() {
-        scope.launch {
-            FirebaseFirestore.getInstance().collection("Users").get().addOnSuccessListener {
-                data.clear()
-                for (document in it) {
+    private fun getHealthInfo() {  //all userHealth get
+        scope.launch {           //Asynchronized Start
+            FirebaseFirestore.getInstance().collection("Users").get().addOnSuccessListener {  //all of user to get uid
+                data.clear()      //data clear
+                for (document in it) {   //get User Object
                     FirebaseFirestore.getInstance().collection("Users").document(document.id).get()
                         .addOnSuccessListener {
-                            var user = (it.toObject(Patient::class.java)!!)
-                            if (!(user!!.base_user.userType)) {
-                                data.add(
+                            var user = (it.toObject(Patient::class.java)!!)  //to cast patient model
+                            if (!(user!!.base_user.userType)) {  //only patient type add HealthInfo
+                                data.add(   //add Info
                                     Item_HealthInfo(
                                         user.health_title,
                                         user.health_detail,
@@ -100,8 +92,8 @@ class SelectFragment : Fragment() {  //환자 리스트 선택
                 }
             }
             withContext(Dispatchers.Main) {
-                binding.swipe.isRefreshing = false
-                adapter.notifyDataSetChanged()
+                binding.swipe.isRefreshing = false    //refresh finish
+                adapter.notifyDataSetChanged()        //adapter item dataSetChanged notify
             }
         }
     }

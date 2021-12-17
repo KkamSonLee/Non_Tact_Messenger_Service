@@ -6,7 +6,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class FirebaseMessageService : FirebaseMessagingService() {
+class FirebaseMessageService : FirebaseMessagingService() { // FCM Message service class for push notificiation
 
         override fun onMessageReceived(remoteMessage: RemoteMessage) {
             if (remoteMessage.notification != null) {

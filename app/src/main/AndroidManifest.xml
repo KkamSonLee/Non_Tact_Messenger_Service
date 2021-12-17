@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ChoiceActivity"
+            android:name=".ViewController.ChoiceActivity"
             android:exported="false" />
 
         <meta-data
@@ -23,7 +23,7 @@
             android:resource="@xml/network_security_config" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".ViewController.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ViewController.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
             <intent-filter>
