@@ -14,7 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.non_tact_messenger_service.ViewController.MainActivity
-import com.example.non_tact_messenger_service.model.Firebase_Database
+import com.example.non_tact_messenger_service.model.Observer.Firebase_Database
 import com.example.non_tact_messenger_service.R
 import com.example.non_tact_messenger_service.model.Storage
 import com.example.non_tact_messenger_service.model.Message.MessageType
@@ -56,7 +56,7 @@ class ChatFragment : Fragment() { // iterator fragment
             sendinput.isEnabled = true
         }
 
-        otherUserID = (activity as MainActivity).otherUID // 임시로 상대방 사용자 id를 넣어줌
+        otherUserID = (activity as MainActivity).otherUID // 상대방 사용자 id를 넣어줌
 
         binding = DoctorProfileDialogBinding.inflate(layoutInflater, container, false)
         if (!(activity as MainActivity).userType) { // 유저타입에 따라 동작이 달라짐

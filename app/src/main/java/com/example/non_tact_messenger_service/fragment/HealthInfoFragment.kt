@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.non_tact_messenger_service.ViewController.MainActivity
 import com.example.non_tact_messenger_service.databinding.FragmentHealthInfoBinding
-import com.example.non_tact_messenger_service.model.Firebase_Database
+import com.example.non_tact_messenger_service.model.Observer.Firebase_Database
 
 class HealthInfoFragment : Fragment() {
     lateinit var binding: FragmentHealthInfoBinding

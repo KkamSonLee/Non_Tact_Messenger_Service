@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.non_tact_messenger_service.ViewController.MainActivity
 import com.example.non_tact_messenger_service.databinding.FragmentProfileBinding
-import com.example.non_tact_messenger_service.model.Firebase_Database
+import com.example.non_tact_messenger_service.model.Observer.Firebase_Database
 
 
 class ProfileFragment : Fragment() {

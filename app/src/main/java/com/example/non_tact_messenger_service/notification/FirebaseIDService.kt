@@ -1,6 +1,6 @@
 package com.example.non_tact_messenger_service.notification
 
-import com.example.non_tact_messenger_service.model.Firebase_Database
+import com.example.non_tact_messenger_service.model.Observer.Firebase_Database
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService

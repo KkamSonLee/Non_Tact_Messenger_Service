@@ -1,4 +1,4 @@
-package com.example.non_tact_messenger_service.model
+package com.example.non_tact_messenger_service.model.Observer
 
 import android.content.Context
 import android.util.Log

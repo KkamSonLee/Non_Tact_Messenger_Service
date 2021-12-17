@@ -4,12 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.non_tact_messenger_service.model.Firebase_Database
+import com.example.non_tact_messenger_service.model.Observer.Firebase_Database
 import com.example.non_tact_messenger_service.ViewController.MainActivity
 import com.example.non_tact_messenger_service.databinding.FragmentSignupBinding
 import com.example.non_tact_messenger_service.notification.FirebaseIDService
