@@ -181,23 +181,30 @@ class ChatFragment : Fragment() { // iterator fragment
                 layoutManager = LinearLayoutManager(this@ChatFragment.context) // 리싸이클러뷰 레이아웃 매니저
                 adapter = GroupAdapter<GroupieViewHolder>().apply {
                     messagesSection = Section(messages) // 어댑터에 아이템들을 넣어줌
-                    if (!Firebase_Database.is_enabled) {
+
+                    add(messagesSection)
+                    if (!Firebase_Database.is_enabled) { // 의사와 환자의 채팅창 활성화 조건 검사
                         if (messagesSection.itemCount>= 2) {
                             Firebase_Database.is_enabled = true
                             sendinput.isEnabled = true
                         }
                     }
-                    add(messagesSection)
                 }
             }
             shouldInitRecyclerView = false
         }
 
-        fun updateItems() = messagesSection.update(messages) //
+        fun updateItems() = messagesSection.update(messages) // 옵저버 패턴에 대응하여 계속 실행
         if (shouldInitRecyclerView)
             init()
-        else {
+        else { // 의사와 환자의 채팅창 활성화 조건 검사
             updateItems()
+            if (!Firebase_Database.is_enabled) {
+                if (messagesSection.itemCount>= 2) {
+                    Firebase_Database.is_enabled = true
+                    sendinput.isEnabled = true
+                }
+            }
             if(!mysending) {
                 (activity as MainActivity).Notification()
             }else{

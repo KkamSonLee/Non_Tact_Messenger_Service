@@ -47,11 +47,13 @@ class MainActivity : AppCompatActivity() {
 
 
         if (intent.hasExtra("user")) {  //User type decide when change from Choice Activity
-            if (intent.getBooleanExtra("user", false)) {
+            if (intent.getBooleanExtra("user", true)) {
                 fragmentChange(2)
+                intent_data = intent.getBooleanExtra("user", false)
                 userType = true
             } else {
                 fragmentChange(2)
+                intent_data = intent.getBooleanExtra("user", false)
                 userType = false
             }
         } else {
